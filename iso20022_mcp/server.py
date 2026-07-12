@@ -92,8 +92,11 @@ def search(
         Field(description="Use-case, message type or keyword. Empty = all."),
     ] = "",
 ) -> dict[str, Any]:
-    """Find ISO 20022 message types matching a query."""
-    return {"results": registry.search_catalog(query)}
+    """Find ISO 20022 message types and suite servers matching a query."""
+    return {
+        "results": registry.search_catalog(query),
+        "servers": registry.search_servers(query),
+    }
 
 
 @server.tool(
@@ -107,6 +110,20 @@ def search(
 def list_families() -> dict[str, Any]:
     """List the supported families and their install status."""
     return {"families": registry.family_summary()}
+
+
+@server.tool(
+    annotations=_PURE_READ,
+    description=(
+        "List the whole ISO 20022 suite the gateway knows: the message "
+        "families (pain/pacs/camt/acmt), the Exceptions & Investigations "
+        "messages (camt.056/camt.029), and the specialized servers "
+        "(reconciliation, agent-payment bridge) with what each does."
+    ),
+)
+def list_servers() -> dict[str, Any]:
+    """Return the full suite map: families, E&I messages and specialized servers."""
+    return registry.list_all_servers()
 
 
 @server.tool(
@@ -166,6 +183,12 @@ def generate(
 ) -> dict[str, Any]:
     """Generate an ISO 20022 message from records."""
     try:
+        if message_type in registry.EI_MESSAGE_TYPES:
+            # Exceptions & Investigations route to camt-exceptions, whose
+            # generator takes a single record and XSD-validates internally.
+            record = records[0] if records else {}
+            func = registry.resolve_ei("generate_message")
+            return func(message_type, record)
         fam = registry.family_for(message_type)
         if not fam["generate"]:
             return {

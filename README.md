@@ -6,7 +6,7 @@ route across every ISO 20022 message family (`pain` · `pacs` · `camt` ·
 `acmt`).** Install one thing, discover the whole suite: an agent sees a handful
 of verbs instead of the 60+ tools spread across five individual servers.
 
-> **Latest release: v0.0.1** — 6 routing meta-tools over stdio, light core
+> **Latest release: v0.0.2** — 7 routing meta-tools over stdio, light core
 > (only `mcp`), backing family servers as optional extras, for Python 3.10+.
 > The front door to the [ISO 20022 MCP suite](#the-suite).
 
@@ -49,6 +49,7 @@ MCP client config (e.g. Claude Desktop):
 | --- | --- | --- |
 | `search` | Find message types by use-case / keyword ("reconciliation", "pacs.008"). | all (catalogue) |
 | `list_families` | List families, their capabilities, and which backing packages are installed. | all |
+| `list_servers` | Full suite map: families + E&I messages + specialized servers (reconcile, agent-payment bridge). | all |
 | `describe` | Required fields + input JSON Schema for a message type. | all |
 | `validate` | Validate records against a message type's schema. | all |
 | `generate` | Generate a validated ISO 20022 XML message from records. | pain · pacs · acmt |
@@ -67,6 +68,12 @@ obscurely, and every "package not installed" case tells you exactly what to
 | `pacs` | FI-to-FI Customer Credit Transfer | [`pacs008-mcp`][pacs008-mcp] | ✅ | ✅ |
 | `camt` | Bank-to-Customer Statement | [`camt053-mcp`][camt053-mcp] | — | ✅ |
 | `acmt` | Account Opening Instruction | [`acmt001-mcp`][acmt001-mcp] | ✅ | — |
+| `camt.056`/`camt.029` | Cancellation / Resolution (E&I) | [`camt-exceptions`][camt-exceptions] | ✅ | — |
+
+`generate("camt.056.001.12", …)` routes to `camt-exceptions`. The gateway also
+surfaces the specialized servers — [`reconcile-mcp`][reconcile-mcp] and
+[`ap2-iso20022`][ap2-iso20022] — via `search` and `list_servers` for discovery
+(they're invoked through their own tools).
 
 The gateway imports each backing server **lazily and optionally** — the core
 depends only on `mcp`, and a family's server is loaded on first use. Message
@@ -125,3 +132,6 @@ Licensed under the [Apache License, Version 2.0](LICENSE).
 [acmt001-mcp]: https://github.com/sebastienrousseau/acmt001-mcp
 [reconcile-mcp]: https://github.com/sebastienrousseau/reconcile-mcp
 [bsp-mcp]: https://github.com/sebastienrousseau/bankstatementparser-mcp
+
+[camt-exceptions]: https://github.com/sebastienrousseau/camt-exceptions
+[ap2-iso20022]: https://github.com/sebastienrousseau/ap2-iso20022

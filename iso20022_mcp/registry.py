@@ -42,6 +42,7 @@ from their source:
 from __future__ import annotations
 
 import importlib
+import re
 from collections.abc import Callable
 from typing import Any, cast
 
@@ -82,6 +83,75 @@ FAMILIES: dict[str, dict[str, Any]] = {
         "parse": None,
     },
 }
+
+# Exceptions & Investigations message types are routed to the camt-exceptions
+# server (not camt053-mcp, which handles statements). Its generate_message
+# takes a single record and validates against the XSD internally.
+EI_MESSAGE_TYPES: dict[str, str] = {
+    "camt.056.001.12": "FI to FI Payment Cancellation Request",
+    "camt.029.001.14": "Resolution of Investigation",
+}
+_EI_MODULE = "camt_exceptions.server"
+_EI_PACKAGE = "camt-exceptions"
+
+# Specialized suite servers that are not message-family generators. The gateway
+# surfaces them for discovery (search / list_servers); they are invoked
+# directly via their own tools rather than the gateway's generate/validate.
+SPECIALIZED_SERVERS: list[dict[str, Any]] = [
+    {
+        "name": "reconcile-mcp",
+        "package": "reconcile-mcp",
+        "title": "Statement/payment reconciliation",
+        "does": (
+            "Match camt.053 statement entries against expected pain.001 "
+            "payments: exact, partial, one-to-many and many-to-one, with "
+            "explainable results."
+        ),
+        "keywords": [
+            "reconcile",
+            "reconciliation",
+            "matching",
+            "statement vs payment",
+            "unmatched",
+        ],
+    },
+    {
+        "name": "camt-exceptions",
+        "package": "camt-exceptions",
+        "title": "Exceptions & Investigations",
+        "does": (
+            "Generate XSD-valid camt.056 payment cancellation and camt.029 "
+            "resolution-of-investigation messages."
+        ),
+        "keywords": [
+            "cancel",
+            "cancellation",
+            "recall",
+            "investigation",
+            "exception",
+            "camt.056",
+            "camt.029",
+        ],
+    },
+    {
+        "name": "ap2-iso20022",
+        "package": "ap2-iso20022",
+        "title": "Agent-payment mandate bridge",
+        "does": (
+            "Bridge AP2 / x402 agent-payment mandates into wire-valid "
+            "pain.001 / pacs.008 records, with spending-cap and expiry "
+            "guardrails."
+        ),
+        "keywords": [
+            "ap2",
+            "x402",
+            "agent payment",
+            "agentic",
+            "mandate",
+            "authorisation",
+        ],
+    },
+]
 
 # Curated catalogue for keyword/use-case search. Kept small and human: it maps
 # what people *say they want to do* to the right message type and family.
@@ -238,19 +308,35 @@ def _operations(fam: dict[str, Any]) -> list[str]:
     return ops
 
 
+def _matches(query: str, haystack: str) -> bool:
+    """Token-aware match: any query word (>=3 chars) appearing in ``haystack``.
+
+    Handles natural-language queries ("cancel a payment"), not just single
+    keywords. Empty query matches everything; a query of only short words falls
+    back to a raw substring test.
+    """
+    q = query.strip().lower()
+    if not q:
+        return True
+    hay = haystack.lower()
+    tokens = [t for t in re.split(r"[^0-9a-z.]+", q) if len(t) >= 3]
+    if not tokens:
+        return q in hay
+    return any(t in hay for t in tokens)
+
+
 def search_catalog(query: str) -> list[dict[str, Any]]:
     """Return catalogue entries matching ``query`` by name, type or keyword.
 
-    Case-insensitive substring match; empty/whitespace query returns the whole
+    Token-aware, case-insensitive; empty/whitespace query returns the whole
     catalogue so an agent can browse.
     """
-    q = query.strip().lower()
     results: list[dict[str, Any]] = []
     for entry in CATALOG:
         haystack = " ".join(
             [entry["message_type"], entry["name"], *entry["keywords"]]
         ).lower()
-        if not q or q in haystack:
+        if _matches(query, haystack):
             results.append(
                 {
                     "message_type": entry["message_type"],
@@ -260,3 +346,61 @@ def search_catalog(query: str) -> list[dict[str, Any]]:
                 }
             )
     return results
+
+
+def search_servers(query: str) -> list[dict[str, Any]]:
+    """Return specialized suite servers matching ``query`` (empty = all)."""
+    results: list[dict[str, Any]] = []
+    for srv in SPECIALIZED_SERVERS:
+        haystack = " ".join(
+            [srv["name"], srv["title"], srv["does"], *srv["keywords"]]
+        ).lower()
+        if _matches(query, haystack):
+            results.append(
+                {
+                    "name": srv["name"],
+                    "package": srv["package"],
+                    "title": srv["title"],
+                    "does": srv["does"],
+                }
+            )
+    return results
+
+
+def resolve_ei(func_name: str) -> Callable[..., Any]:
+    """Resolve a callable on the camt-exceptions server for E&I message types.
+
+    Raises:
+        ValueError: if the camt-exceptions package is not installed.
+    """
+    try:
+        module = _load_module(_EI_MODULE)
+    except ImportError as exc:
+        raise ValueError(
+            f"Exceptions & Investigations messages need the '{_EI_PACKAGE}' "
+            f"package. Install it with: pip install {_EI_PACKAGE}"
+        ) from exc
+    return cast("Callable[..., Any]", getattr(module, func_name))
+
+
+def list_all_servers() -> dict[str, Any]:
+    """Full map of the suite: message families plus specialized servers.
+
+    Gives an agent one view of everything the gateway can route to or point at.
+    """
+    return {
+        "families": family_summary(),
+        "exceptions_and_investigations": [
+            {"message_type": mt, "name": name, "package": _EI_PACKAGE}
+            for mt, name in EI_MESSAGE_TYPES.items()
+        ],
+        "specialized": [
+            {
+                "name": s["name"],
+                "package": s["package"],
+                "title": s["title"],
+                "does": s["does"],
+            }
+            for s in SPECIALIZED_SERVERS
+        ],
+    }

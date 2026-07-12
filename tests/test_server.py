@@ -27,6 +27,7 @@ from iso20022_mcp import __version__  # noqa: E402
 EXPECTED_TOOLS = {
     "search",
     "list_families",
+    "list_servers",
     "describe",
     "validate",
     "generate",
@@ -53,6 +54,37 @@ def test_server_version_override():
 def test_search_tool():
     out = srv.search("make a payment")
     assert any(r["message_type"] == "pain.001" for r in out["results"])
+
+
+def test_search_tool_surfaces_servers():
+    out = srv.search("reconciliation")
+    assert any(s["name"] == "reconcile-mcp" for s in out["servers"])
+
+
+def test_list_servers_tool(fake_backend):
+    out = srv.list_servers()
+    assert out["families"] and out["specialized"]
+    assert any(
+        e["message_type"] == "camt.056.001.12"
+        for e in out["exceptions_and_investigations"]
+    )
+
+
+def test_generate_routes_ei_to_camt_exceptions(fake_backend):
+    out = srv.generate("camt.056.001.12", [{"assignment_id": "C"}])
+    assert out["message_type"] == "camt.056.001.12"
+
+
+def test_generate_ei_with_empty_records(fake_backend):
+    # Empty list -> passes {} to camt-exceptions (which would flag missing
+    # fields); here the fake backend just echoes back.
+    out = srv.generate("camt.029.001.14", [])
+    assert out["message_type"] == "camt.029.001.14"
+
+
+def test_generate_ei_missing_package(no_backend):
+    err = srv.generate("camt.056.001.12", [{"assignment_id": "C"}])
+    assert "pip install camt-exceptions" in err["error"]
 
 
 def test_list_families_tool(fake_backend):
