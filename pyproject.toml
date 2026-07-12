@@ -1,0 +1,156 @@
+[tool.poetry]
+name = "iso20022-mcp"
+version = "0.0.1"
+description = "Unified Model Context Protocol (MCP) gateway for ISO 20022: one small set of meta-tools (search, describe, validate, generate, parse) routing across the pain, pacs, camt and acmt message families."
+authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/sebastienrousseau/iso20022-mcp"
+homepage = "https://iso20022-mcp.com"
+keywords = [
+    "iso-20022",
+    "mcp",
+    "payments",
+    "pain001",
+    "pacs008",
+    "camt053",
+    "acmt001",
+    "fintech",
+]
+packages = [
+    { include = "iso20022_mcp" },
+]
+
+[tool.poetry.scripts]
+iso20022-mcp = "iso20022_mcp.server:main"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+mcp = ">=1.2"
+# Backing family servers are optional: install only the families you need, or
+# `pip install iso20022-mcp[all]` for everything. The gateway imports them
+# lazily and returns an actionable error if a needed family is absent.
+pain001-mcp = { version = ">=0.0.55", optional = true }
+pacs008-mcp = { version = ">=0.0.4", optional = true }
+camt053-mcp = { version = ">=0.0.12", optional = true }
+acmt001-mcp = { version = ">=0.0.5", optional = true }
+
+[tool.poetry.extras]
+pain = ["pain001-mcp"]
+pacs = ["pacs008-mcp"]
+camt = ["camt053-mcp"]
+acmt = ["acmt001-mcp"]
+all = ["pain001-mcp", "pacs008-mcp", "camt053-mcp", "acmt001-mcp"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=9.0.3,<10.0.0"
+pytest-cov = ">=6.0.0,<8.0.0"
+black = "^26.3.1"
+ruff = "^0.1.0"
+mypy = "^1.11.0"
+bandit = "^1.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 79
+target-version = ['py310']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--tb=short",
+    "--cov=iso20022_mcp",
+    "--cov-branch",
+    "--cov-report=term-missing",
+    "--cov-fail-under=100",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["iso20022_mcp"]
+
+[tool.coverage.report]
+exclude_also = [
+    "if __name__ == .__main__.:",
+    "pragma: no cover",
+    "@overload",
+]
+fail_under = 100
+show_missing = true
+skip_covered = false
+
+[tool.ruff]
+line-length = 79
+target-version = "py310"
+extend-exclude = ["*.md", "tmp_env", ".venv", ".eggs"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "C4", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/conftest.py" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_any_unimported = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+check_untyped_defs = true
+strict_equality = true
+exclude = [
+    "tmp_env/",
+    ".venv/",
+    ".eggs/",
+]
+
+[[tool.mypy.overrides]]
+module = "mcp.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Backing family servers are dynamically imported optional dependencies; they
+# may not be present when type-checking the gateway in isolation.
+module = [
+    "pain001_mcp.*",
+    "pacs008_mcp.*",
+    "camt053_mcp.*",
+    "acmt001_mcp.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# The meta-tools return bare JSON-shaped data routed from dynamically-resolved
+# backing callables. Relax the two strict checks that trips while keeping the
+# rest of strict mode in force.
+module = "iso20022_mcp.server"
+disallow_any_generics = false
+warn_return_any = false
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+warn_unused_ignores = false
+disable_error_code = ["arg-type", "return-value", "attr-defined", "assignment"]
