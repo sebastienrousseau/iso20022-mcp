@@ -16,6 +16,7 @@
 """Tests for the ISO 20022 gateway meta-tool surface."""
 
 import asyncio
+import json
 
 import pytest
 
@@ -117,8 +118,46 @@ def test_validate_tool_missing_package(no_backend):
 
 
 def test_generate_tool_happy(fake_backend):
+    # The backend returns the XML as a plain string; the gateway must wrap
+    # it into its declared dict output shape.
     ok = srv.generate("pain.001", [{"a": 1}])
-    assert ok["xml"] == "<pain.001/>"
+    assert ok == {"message_type": "pain.001", "xml": "<pain.001/>"}
+
+
+def test_generate_tool_decodes_backend_json_error(fake_backend):
+    # pain/pacs/acmt backends stringify failures as JSON-encoded
+    # {"error": ...} payloads; the gateway surfaces them as real dicts.
+    fake_backend.generate_message = lambda mt, recs: json.dumps(
+        {"error": "boom"}
+    )
+    err = srv.generate("pain.001", [{"a": 1}])
+    assert err == {"error": "boom"}
+
+
+def test_generate_tool_passes_dict_results_through(fake_backend):
+    # camt-exceptions (E&I) already returns a dict; it must not be wrapped.
+    fake_backend.generate_message = lambda mt, rec: {
+        "message_type": mt,
+        "xml": f"<{mt}/>",
+        "valid": True,
+    }
+    out = srv.generate("camt.056.001.12", [{"assignment_id": "C"}])
+    assert out["valid"] is True and out["message_type"] == "camt.056.001.12"
+
+
+def test_generate_tool_output_passes_mcp_validation(fake_backend):
+    # Regression: calling through FastMCP exercises the declared output
+    # model. With a string-returning backend this used to fail pydantic
+    # validation ("Input should be a valid dictionary") instead of
+    # returning the finished XML.
+    result = asyncio.run(
+        srv.server.call_tool(
+            "generate",
+            {"message_type": "pain.001", "records": [{"a": 1}]},
+        )
+    )
+    structured = result[1] if isinstance(result, tuple) else result
+    assert structured["xml"] == "<pain.001/>"
 
 
 def test_generate_tool_unsupported_for_camt(fake_backend):

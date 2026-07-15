@@ -44,7 +44,9 @@ def _make_fake_backend() -> types.ModuleType:
         }
 
     def generate_message(message_type, records):
-        return {"message_type": message_type, "xml": f"<{message_type}/>"}
+        # Faithful to the real pain/pacs/acmt backends: the validated XML
+        # document comes back as a plain string, not a dict.
+        return f"<{message_type}/>"
 
     def parse_message(xml):
         return {"parsed_by": "pacs", "length": len(xml)}
