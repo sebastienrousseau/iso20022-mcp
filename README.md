@@ -6,8 +6,9 @@ route across every ISO 20022 message family (`pain` · `pacs` · `camt` ·
 `acmt`).** Install one thing, discover the whole suite: an agent sees a handful
 of verbs instead of the 60+ tools spread across five individual servers.
 
-> **Latest release: v0.0.3** — 7 routing meta-tools over stdio, light core
-> (only `mcp`), backing family servers as optional extras, for Python 3.10+.
+> **Latest release: v0.0.4** — 7 routing meta-tools over stdio, light core
+> (only `mcp`), backing family servers as optional extras, actionable
+> structured errors on every `validate`/`generate` failure, for Python 3.10+.
 > The front door to the [ISO 20022 MCP Suite](#the-iso-20022-mcp-suite).
 
 ## Why a gateway
@@ -89,6 +90,24 @@ inbound format) returns a clear, explanatory error rather than failing
 obscurely, and every "package not installed" case tells you exactly what to
 `pip install`.
 
+Three ergonomics guarantees hold across the routed families:
+
+- **Actionable structured errors.** Any error a backing server raises —
+  not just the ones it returns — reaches the agent as an
+  `{"error": "<Type>: <message>"}` payload instead of an opaque
+  tool-execution failure. For `pain` generation the error lists every
+  missing or invalid field at once, so one fix-and-retry suffices.
+- **Family aliases for `message_type`.** Bare family names resolve to a
+  concrete version via the backing server: `pain.001` →
+  `pain.001.001.09`, `pain.008` → `pain.008.001.02`. Fully-versioned
+  types are still preferred where you know them.
+- **Per-family parse coverage, stated up front.** `parse` covers the
+  inbound families only: `pacs` (e.g. `pacs.008`) and `camt` (e.g.
+  `camt.053`). The initiation families `pain` and `acmt` are
+  outbound-only — they have no parser here, so don't attempt a
+  generate→parse round-trip for `pain.001` or `acmt.001`; use `validate`
+  (or the backing server's XSD validation) instead.
+
 ## Routing
 
 | Prefix | Family | Backing server | generate | parse |
@@ -106,7 +125,10 @@ surfaces the specialized servers — [`reconcile-mcp`][reconcile-mcp] and
 
 The gateway imports each backing server **lazily and optionally** — the core
 depends only on `mcp`, and a family's server is loaded on first use. Message
-types are matched on their prefix (`pacs.008.001.08` → `pacs`).
+types are matched on their prefix (`pacs.008.001.08` → `pacs`). The `pain`
+extra requires `pain001-mcp >= 0.0.56`, the release that carries the
+LLM-ergonomic generate surface (field aliases, computed `nb_of_txs` /
+`ctrl_sum`, all-at-once field errors) the gateway's guarantees build on.
 
 ## Example
 
@@ -116,8 +138,12 @@ search(query="reconciliation")
 
 describe(message_type="pacs.008")           # required fields + input schema
 validate(message_type="pacs.008", records=[…])
-generate(message_type="pain.001", records=[…])   # → validated XML
+generate(message_type="pain.001", records=[…])   # → { "xml": "<Document>…" }
+  # bare "pain.001" resolves to pain.001.001.09; on failure the payload is
+  # { "error": "Missing required fields for pain.001.001.09: …" } listing
+  # every missing or invalid field at once — fix them all and retry once
 parse(message_type="camt.053", xml="<Document>…")
+  # parse covers pacs + camt only; pain and acmt are outbound-only
 ```
 
 For the dedicated reconciliation engine that matches `camt.053` statements
