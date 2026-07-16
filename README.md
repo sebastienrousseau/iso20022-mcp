@@ -72,17 +72,17 @@ MCP client config (e.g. Claude Desktop):
 }
 ```
 
-## The meta-tools
+## Tools
 
-| Tool | What it does | Families |
-| --- | --- | --- |
-| `search` | Find message types by use-case / keyword ("reconciliation", "pacs.008"). | all (catalogue) |
-| `list_families` | List families, their capabilities, and which backing packages are installed. | all |
-| `list_servers` | Full suite map: families + E&I messages + specialized servers (reconcile, agent-payment bridge). | all |
-| `describe` | Required fields + input JSON Schema for a message type. | all |
-| `validate` | Validate records against a message type's schema. | all |
-| `generate` | Generate a validated ISO 20022 XML message from records. | pain · pacs · acmt |
-| `parse` | Parse an inbound ISO 20022 XML message into structured data. | pacs · camt |
+The 7 routing meta-tools:
+
+- `search` — Find message types by use-case / keyword ("reconciliation", "pacs.008"). *(families: all — catalogue)*
+- `list_families` — List families, their capabilities, and which backing packages are installed. *(families: all)*
+- `list_servers` — Full suite map: families + E&I messages + specialized servers (reconcile, agent-payment bridge). *(families: all)*
+- `describe` — Required fields + input JSON Schema for a message type. *(families: all)*
+- `validate` — Validate records against a message type's schema. *(families: all)*
+- `generate` — Generate a validated ISO 20022 XML message from records. *(families: pain · pacs · acmt)*
+- `parse` — Parse an inbound ISO 20022 XML message into structured data. *(families: pacs · camt)*
 
 Operations are capability-aware: `generate` on a `camt.053` statement (an
 inbound format) returns a clear, explanatory error rather than failing
