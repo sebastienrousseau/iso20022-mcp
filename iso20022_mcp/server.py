@@ -72,10 +72,22 @@ _PURE_READ = ToolAnnotations(
 )
 
 _MT_DESC = (
-    "ISO 20022 message type or family prefix, e.g. 'pacs.008' or 'camt.053'."
+    "ISO 20022 message type, e.g. 'pain.001.001.09', 'pacs.008' or "
+    "'camt.053'. For pain messages a fully-versioned type is preferred; "
+    "the bare family name 'pain.001' resolves to 'pain.001.001.09'."
 )
 _RECORDS_DESC = (
-    "List of record objects to validate or generate a message from."
+    "List of flat record objects (field name → value). Field names come "
+    "from the family's input schema — call describe(message_type) for the "
+    "required fields. For pain.001 credit transfers the key fields are: "
+    "id, date ('YYYY-MM-DD' accepted), initiator_name, payment_id, "
+    "requested_execution_date ('YYYY-MM-DD'), debtor_name, "
+    "debtor_account_IBAN, debtor_agent_BIC, creditor_name, "
+    "creditor_account_IBAN, creditor_agent_BIC, payment_amount (alias "
+    "'amount'), currency (alias 'payment_currency'), "
+    "remittance_information; batch_booking takes JSON true/false, and "
+    "nb_of_txs/ctrl_sum are computed automatically. IBAN and BIC values "
+    "are strictly validated, never coerced."
 )
 
 
@@ -168,6 +180,8 @@ def validate(
         return func(message_type, records)
     except ValueError as exc:
         return {"error": str(exc)}
+    except Exception as exc:  # noqa: BLE001 - backend errors become payloads
+        return {"error": f"{type(exc).__name__}: {exc}"}
 
 
 def _normalize_generated(message_type: str, result: Any) -> dict[str, Any]:
@@ -198,7 +212,9 @@ def _normalize_generated(message_type: str, result: Any) -> dict[str, Any]:
         "Generate a validated ISO 20022 XML message from records; the XML "
         "document is returned in the 'xml' key. Supported for initiation "
         "and interbank families (pain, pacs, acmt); statement families "
-        "(camt) are inbound-only and return an explanatory error."
+        "(camt) are inbound-only and return an explanatory error. On "
+        "failure the 'error' value lists every missing or invalid field "
+        "at once — fix them all and retry once."
     ),
 )
 def generate(
@@ -227,14 +243,21 @@ def generate(
         return _normalize_generated(message_type, func(message_type, records))
     except ValueError as exc:
         return {"error": str(exc)}
+    except Exception as exc:  # noqa: BLE001 - a raised backend error must
+        # still reach the agent as a structured payload it can act on,
+        # never as an opaque tool-execution failure.
+        return {"error": f"{type(exc).__name__}: {exc}"}
 
 
 @server.tool(
     annotations=_PURE_READ,
     description=(
         "Parse an inbound ISO 20022 XML message into structured data. "
-        "Supported for interbank (pacs) and statement (camt) families; "
-        "initiation families return an explanatory error."
+        "Parse coverage is per-family: pacs (e.g. pacs.008) and camt "
+        "(e.g. camt.053) only. The initiation families pain and acmt are "
+        "outbound-only — they have NO parser here, so do not attempt a "
+        "generate→parse round-trip for pain.001 or acmt.001; use "
+        "'validate' or the backing server's XSD validation instead."
     ),
 )
 def parse(

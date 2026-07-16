@@ -6,12 +6,12 @@
     "url": "https://github.com/sebastienrousseau/iso20022-mcp",
     "source": "github"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "iso20022-mcp",
-      "version": "0.0.3",
+      "version": "0.0.4",
       "transport": {
         "type": "stdio"
       }

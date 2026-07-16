@@ -192,3 +192,61 @@ def test_main_runs_server(monkeypatch):
     )
     srv.main()
     assert called["ran"] is True
+
+
+# ---------------------------------------------------------------------------
+# LLM-ergonomics regressions (real transcript: raised backend errors reached
+# the agent as opaque tool-execution failures instead of actionable payloads)
+# ---------------------------------------------------------------------------
+def test_generate_tool_wraps_raised_backend_errors(fake_backend):
+    # Old pain001 backends raised KeyError('nb_of_txs') / RuntimeError for
+    # XSD failures; the gateway must turn any raised backend error into a
+    # structured payload naming the error type.
+    def _boom(mt, recs):
+        raise KeyError("nb_of_txs")
+
+    fake_backend.generate_message = _boom
+    err = srv.generate("pain.001", [{"a": 1}])
+    assert err == {"error": "KeyError: 'nb_of_txs'"}
+
+
+def test_validate_tool_wraps_raised_backend_errors(fake_backend):
+    def _boom(mt, recs):
+        raise RuntimeError("schema exploded")
+
+    fake_backend.validate_records = _boom
+    err = srv.validate("pain.001", [{"a": 1}])
+    assert err == {"error": "RuntimeError: schema exploded"}
+
+
+def test_generate_records_schema_documents_pain001_fields():
+    # The records description is what an agent reads before its first call:
+    # it must name the aliases, formats and computed fields.
+    tool = asyncio.run(srv.server.list_tools())
+    generate_tool = next(t for t in tool if t.name == "generate")
+    records_desc = generate_tool.inputSchema["properties"]["records"][
+        "description"
+    ]
+    for fragment in (
+        "alias 'amount'",
+        "alias 'payment_currency'",
+        "YYYY-MM-DD",
+        "nb_of_txs/ctrl_sum are computed automatically",
+        "strictly validated",
+    ):
+        assert fragment in records_desc
+    assert "lists every missing or invalid field" in (
+        generate_tool.description or ""
+    )
+
+
+def test_parse_tool_documents_per_family_coverage():
+    # Agents attempted a pain.001 generate->parse round-trip and had to
+    # discover by failure that pain has no parser; the description must
+    # state the coverage explicitly.
+    tools = asyncio.run(srv.server.list_tools())
+    parse_tool = next(t for t in tools if t.name == "parse")
+    description = parse_tool.description or ""
+    assert "pacs" in description and "camt" in description
+    assert "outbound-only" in description
+    assert "pain.001" in description
