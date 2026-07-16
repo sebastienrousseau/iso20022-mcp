@@ -109,8 +109,8 @@ def test_search_servers():
 
 def test_resolve_ei_success(fake_backend):
     func = registry.resolve_ei("generate_message")
-    out = func("camt.056.001.12", {"x": 1})
-    assert out["message_type"] == "camt.056.001.12"
+    assert func is fake_backend.generate_message
+    assert func("camt.056.001.12", {"x": 1}) == "<camt.056.001.12/>"
 
 
 def test_resolve_ei_missing_package(no_backend):

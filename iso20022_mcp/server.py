@@ -45,6 +45,7 @@ Launching the server:
 The server communicates over stdio (FastMCP's default transport).
 """
 
+import json
 from typing import Annotated, Any
 
 from mcp.server.fastmcp import FastMCP
@@ -169,12 +170,35 @@ def validate(
         return {"error": str(exc)}
 
 
+def _normalize_generated(message_type: str, result: Any) -> dict[str, Any]:
+    """Coerce a backing generate result into this tool's declared dict shape.
+
+    The family backends (pain / pacs / acmt) return the validated XML
+    document as a plain string -- or a JSON-encoded ``{"error": ...}``
+    payload on failure -- while camt-exceptions returns a dict. The
+    ``generate`` tool declares a dict output model, and FastMCP validates
+    the return value against it, so a bare string must be wrapped (and a
+    stringified error decoded) before it leaves the gateway.
+    """
+    if isinstance(result, dict):
+        return result
+    text = str(result)
+    try:
+        decoded = json.loads(text)
+    except ValueError:
+        decoded = None
+    if isinstance(decoded, dict):
+        return decoded
+    return {"message_type": message_type, "xml": text}
+
+
 @server.tool(
     annotations=_PURE_READ,
     description=(
-        "Generate a validated ISO 20022 XML message from records. Supported "
-        "for initiation and interbank families (pain, pacs, acmt); statement "
-        "families (camt) are inbound-only and return an explanatory error."
+        "Generate a validated ISO 20022 XML message from records; the XML "
+        "document is returned in the 'xml' key. Supported for initiation "
+        "and interbank families (pain, pacs, acmt); statement families "
+        "(camt) are inbound-only and return an explanatory error."
     ),
 )
 def generate(
@@ -188,7 +212,9 @@ def generate(
             # generator takes a single record and XSD-validates internally.
             record = records[0] if records else {}
             func = registry.resolve_ei("generate_message")
-            return func(message_type, record)
+            return _normalize_generated(
+                message_type, func(message_type, record)
+            )
         fam = registry.family_for(message_type)
         if not fam["generate"]:
             return {
@@ -198,7 +224,7 @@ def generate(
                 )
             }
         func = registry.resolve(message_type, "generate_message")
-        return func(message_type, records)
+        return _normalize_generated(message_type, func(message_type, records))
     except ValueError as exc:
         return {"error": str(exc)}
 

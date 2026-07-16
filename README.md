@@ -6,7 +6,7 @@ route across every ISO 20022 message family (`pain` · `pacs` · `camt` ·
 `acmt`).** Install one thing, discover the whole suite: an agent sees a handful
 of verbs instead of the 60+ tools spread across five individual servers.
 
-> **Latest release: v0.0.2** — 7 routing meta-tools over stdio, light core
+> **Latest release: v0.0.3** — 7 routing meta-tools over stdio, light core
 > (only `mcp`), backing family servers as optional extras, for Python 3.10+.
 > The front door to the [ISO 20022 MCP Suite](#the-iso-20022-mcp-suite).
 
