@@ -26,7 +26,7 @@ iso20022-mcp = "iso20022_mcp.server:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-mcp = ">=1.2"
+mcp = ">=1.2,<2"
 # Backing family servers are optional: install only the families you need, or
 # `pip install iso20022-mcp[all]` for everything. The gateway imports them
 # lazily and returns an actionable error if a needed family is absent.
