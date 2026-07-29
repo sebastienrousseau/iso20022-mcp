@@ -5,7 +5,7 @@
   ],
   "title": "iso20022-mcp",
   "display_name": "ISO 20022 MCP",
-  "description": "Unified Model Context Protocol (MCP) gateway for ISO 20022: one small set of meta-tools (search, describe, validate, generate, parse) routing across the pain, pacs, camt and acmt message families.",
+  "description": "Unified Model Context Protocol (MCP) gateway for ISO 20022. Exposes one small set of meta-tools (search, describe, validate, generate, parse) that route across the pain, pacs, camt and acmt message families, so an agent works with initiation, clearing/settlement, cash-management and account-management messages through a single consistent interface instead of one server per message type. Apache-2.0, pure Python over stdio.",
   "version": "0.0.5",
   "repository": "https://github.com/sebastienrousseau/iso20022-mcp",
   "homepage": "https://iso20022-mcp.com",
@@ -19,11 +19,17 @@
     "iso-20022",
     "mcp",
     "payments",
+    "gateway",
     "pain001",
     "pacs008",
     "camt053",
     "acmt001",
-    "fintech"
+    "message-validation",
+    "xml",
+    "fastmcp",
+    "financial-services",
+    "fintech",
+    "wholesale-banking"
   ],
   "mcpServers": {
     "iso20022": {
