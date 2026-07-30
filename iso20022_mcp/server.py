@@ -281,6 +281,108 @@ def parse(
         return {"error": str(exc)}
 
 
+@server.resource("iso20022://families", title="ISO 20022 family catalogue")
+def families_resource() -> str:
+    """Expose the routed ISO 20022 families as a JSON resource.
+
+    Returns the same family catalogue as the ``list_families`` tool
+    (:func:`registry.family_summary`) -- each family's capabilities, backing
+    package, and whether that package is installed here -- serialised as JSON,
+    so an agent can load the suite map as reference context without a tool
+    call. Mirrors the ``list_families`` tool, which takes no arguments and
+    cannot fail, so no error envelope is needed.
+    """
+    return json.dumps({"families": registry.family_summary()})
+
+
+@server.resource("iso20022://servers", title="ISO 20022 suite map")
+def servers_resource() -> str:
+    """Expose the full ISO 20022 suite map as a JSON resource.
+
+    Returns the same payload as the ``list_servers`` tool
+    (:func:`registry.list_all_servers`) -- message families, the Exceptions &
+    Investigations messages, and the specialised servers -- serialised as JSON.
+    Mirrors the ``list_servers`` tool, which takes no arguments and cannot
+    fail, so no error envelope is needed.
+    """
+    return json.dumps(registry.list_all_servers())
+
+
+@server.resource(
+    "iso20022://describe/{message_type}", title="Message type contract"
+)
+def describe_resource(
+    message_type: Annotated[str, Field(description=_MT_DESC)],
+) -> str:
+    """Expose a message type's field contract as a templated JSON resource.
+
+    A templated MCP Resource returning the same payload as ``describe`` for one
+    message type: its family, required fields, and input JSON Schema, resolved
+    from the family's backing server. Lets an agent pin ``iso20022://describe/
+    pain.001.001.09`` as stable reference context for the message it is
+    building. On a :class:`ValueError` (unknown family, backing package
+    missing) an ``{"error": ...}`` payload is returned instead (serialised),
+    consistent with the ``describe`` tool.
+
+    Args:
+        message_type: A supported ISO 20022 message type (see ``search``).
+    """
+    try:
+        required = registry.resolve(message_type, "get_required_fields")
+        schema = registry.resolve(message_type, "get_input_schema")
+        return json.dumps(
+            {
+                "message_type": message_type,
+                "family": registry.family_for(message_type)["family"],
+                "required_fields": required(message_type),
+                "input_schema": schema(message_type),
+            }
+        )
+    except ValueError as exc:
+        return json.dumps({"error": str(exc)})
+
+
+@server.prompt(title="Route an ISO 20022 task")
+def route_iso20022_task(
+    goal: Annotated[
+        str,
+        Field(
+            description=(
+                "The payments task in plain language, e.g. 'make a SEPA credit "
+                "transfer', 'parse an incoming camt.053', or 'return a payment'."
+            )
+        ),
+    ] = "",
+) -> str:
+    """Guided prompt teaching the model how to route a task across the gateway.
+
+    The MCP client sends this to the model to establish the recommended
+    meta-tool order so it uses the gateway correctly instead of guessing a
+    message type.
+
+    Args:
+        goal: The payments task in plain language.
+
+    Returns:
+        A prompt string instructing the model how to proceed.
+    """
+    goal_line = (
+        f' The task is: "{goal.strip()}".' if goal and goal.strip() else ""
+    )
+    return (
+        f"You have the ISO 20022 gateway.{goal_line} Work in this order: call "
+        "search(query) to find the right message type and which family and "
+        "package provide it; call describe(message_type) (or read the "
+        "iso20022://describe/{message_type} resource) for its required "
+        "fields and input schema; assemble one flat record per instruction and "
+        "check it with validate(message_type, records); then call "
+        "generate(message_type, records) for outbound initiation/interbank "
+        "families (pain/pacs/acmt), or parse(message_type, xml) for inbound "
+        "pacs/camt messages. Do not attempt a generate then parse round-trip "
+        "for pain or acmt -- they are outbound-only here."
+    )
+
+
 def main() -> None:
     """Run the ISO 20022 gateway MCP server over stdio (``iso20022-mcp``)."""
     server.run()

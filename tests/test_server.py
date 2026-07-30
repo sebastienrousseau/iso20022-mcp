@@ -250,3 +250,69 @@ def test_parse_tool_documents_per_family_coverage():
     assert "pacs" in description and "camt" in description
     assert "outbound-only" in description
     assert "pain.001" in description
+
+
+def _registered_prompt_names() -> set[str]:
+    return {p.name for p in srv.server._prompt_manager.list_prompts()}
+
+
+def _registered_resource_uris() -> set[str]:
+    return {str(r.uri) for r in srv.server._resource_manager.list_resources()}
+
+
+def _registered_resource_templates() -> set[str]:
+    return {
+        t.uri_template for t in srv.server._resource_manager.list_templates()
+    }
+
+
+def test_prompts_registered():
+    # MCP Trinity: prompts/list must be non-empty for the gateway.
+    assert "route_iso20022_task" in _registered_prompt_names()
+
+
+def test_resources_registered():
+    # MCP Trinity: static resources plus the templated describe resource.
+    assert {"iso20022://families", "iso20022://servers"} <= (
+        _registered_resource_uris()
+    )
+    assert "iso20022://describe/{message_type}" in (
+        _registered_resource_templates()
+    )
+
+
+def test_families_resource_matches_tool():
+    payload = json.loads(srv.families_resource())
+    assert payload["families"] == srv.list_families()["families"]
+
+
+def test_servers_resource_matches_tool():
+    payload = json.loads(srv.servers_resource())
+    assert payload == srv.list_servers()
+
+
+def test_describe_resource_matches_tool(fake_backend):
+    payload = json.loads(srv.describe_resource("pacs.008"))
+    tool_out = srv.describe("pacs.008")
+    # Resource and tool expose the same contract for a message type.
+    assert payload["message_type"] == tool_out["message_type"]
+    assert payload["required_fields"] == tool_out["required_fields"]
+
+
+def test_describe_resource_unknown_type_returns_error():
+    payload = json.loads(srv.describe_resource("zzzz.001"))
+    assert "error" in payload
+
+
+def test_route_prompt_without_goal_omits_task_line():
+    out = srv.route_iso20022_task()
+    assert "The task is" not in out
+    assert "search(" in out
+
+
+def test_route_prompt_includes_goal_and_tool_order():
+    out = srv.route_iso20022_task("make a SEPA credit transfer")
+    assert "make a SEPA credit transfer" in out
+    # The prompt must teach the search -> describe -> validate -> generate order.
+    for fragment in ("search(", "describe(", "validate(", "generate("):
+        assert fragment in out
