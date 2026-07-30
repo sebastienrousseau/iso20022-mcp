@@ -34,6 +34,12 @@ pain001-mcp = { version = ">=0.0.56", optional = true }
 pacs008-mcp = { version = ">=0.0.4", optional = true }
 camt053-mcp = { version = ">=0.0.12", optional = true }
 acmt001-mcp = { version = ">=0.0.5", optional = true }
+# Optional agent-framework adapters (see iso20022_mcp/adapters.py). These are
+# heavy and conflict-prone, so they are strictly optional and are NOT test or
+# runtime dependencies; the base install never imports them.
+langchain-core = { version = ">=0.2", optional = true }
+crewai = { version = ">=0.51", optional = true }
+llama-index-core = { version = ">=0.10", optional = true }
 
 [tool.poetry.extras]
 pain = ["pain001-mcp"]
@@ -41,6 +47,10 @@ pacs = ["pacs008-mcp"]
 camt = ["camt053-mcp"]
 acmt = ["acmt001-mcp"]
 all = ["pain001-mcp", "pacs008-mcp", "camt053-mcp", "acmt001-mcp"]
+# Framework adapters -- one extra per supported agent framework.
+langchain = ["langchain-core"]
+crewai = ["crewai"]
+llamaindex = ["llama-index-core"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=9.0.3,<10.0.0"
@@ -136,6 +146,17 @@ module = [
     "pacs008_mcp.*",
     "camt053_mcp.*",
     "acmt001_mcp.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Agent frameworks are optional extras, lazily imported by adapters.py and not
+# present when type-checking the gateway in isolation.
+module = [
+    "langchain_core.*",
+    "crewai.*",
+    "crewai_tools.*",
+    "llama_index.*",
 ]
 ignore_missing_imports = true
 
