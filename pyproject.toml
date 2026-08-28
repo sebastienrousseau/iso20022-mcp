@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iso20022-mcp"
-version = "0.0.7"
+version = "0.0.8"
 description = "Unified Model Context Protocol (MCP) gateway for ISO 20022: one small set of meta-tools (search, describe, validate, generate, parse) routing across the pain, pacs, camt and acmt message families."
 authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
 license = "Apache-2.0 OR MIT"
@@ -30,14 +30,16 @@ mcp = ">=1.2,<2"
 # Backing family servers are optional: install only the families you need, or
 # `pip install iso20022-mcp[all]` for everything. The gateway imports them
 # lazily and returns an actionable error if a needed family is absent.
-# Held below 0.0.61 deliberately. pain001 moved to xmlschema 4.x at that
-# release and camt053 is still on 3.x, so the two cannot be installed together
-# and `iso20022-mcp[all]` becomes unsatisfiable. Raising this floor made exactly
-# that happen in 0.0.6. It moves again once camt053 is on xmlschema 4.
-pain001-mcp = { version = ">=0.0.56,<0.0.61", optional = true }
+# The `<0.0.61` cap is gone. It was there because pain001 moved to xmlschema
+# 4.x at 0.0.61 while camt053 and acmt001 were still on 3.x, so `[all]` could
+# not be installed at all -- raising the floor without the cap is exactly what
+# broke 0.0.6. The whole family is now on xmlschema >=4.3.2 (camt053 0.0.17,
+# acmt001 0.0.5), so the floors move together and the cap is no longer load-
+# bearing. `test_extras_resolve.py` asserts the four agree.
+pain001-mcp = { version = ">=0.0.62", optional = true }
 pacs008-mcp = { version = ">=0.0.9", optional = true }
-camt053-mcp = { version = ">=0.0.16", optional = true }
-acmt001-mcp = { version = ">=0.0.6", optional = true }
+camt053-mcp = { version = ">=0.0.17", optional = true }
+acmt001-mcp = { version = ">=0.0.8", optional = true }
 # Optional agent-framework adapters (see iso20022_mcp/adapters.py). These are
 # heavy and conflict-prone, so they are strictly optional and are NOT test or
 # runtime dependencies; the base install never imports them.
@@ -69,6 +71,12 @@ black = "^26.3.1"
 ruff = "^0.1.0"
 mypy = "^1.11.0"
 bandit = "^1.7.0"
+# Used by tests/test_extras_resolve.py to parse the dependency constraints in
+# this file. Both arrive transitively via pytest, but declared here because a
+# test that silently stops running when a transitive drops out is worse than
+# no test.
+packaging = ">=23.0"
+tomli = { version = ">=2.0", python = "<3.11" }
 
 [build-system]
 requires = ["poetry-core"]

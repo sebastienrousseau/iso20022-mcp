@@ -15,4 +15,4 @@
 
 """iso20022-mcp: a unified Model Context Protocol gateway for ISO 20022."""
 
-__version__ = "0.0.6"
+__version__ = "0.0.8"
