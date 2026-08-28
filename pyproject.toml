@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iso20022-mcp"
-version = "0.0.6"
+version = "0.0.7"
 description = "Unified Model Context Protocol (MCP) gateway for ISO 20022: one small set of meta-tools (search, describe, validate, generate, parse) routing across the pain, pacs, camt and acmt message families."
 authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
 license = "Apache-2.0 OR MIT"
@@ -30,7 +30,11 @@ mcp = ">=1.2,<2"
 # Backing family servers are optional: install only the families you need, or
 # `pip install iso20022-mcp[all]` for everything. The gateway imports them
 # lazily and returns an actionable error if a needed family is absent.
-pain001-mcp = { version = ">=0.0.62", optional = true }
+# Held below 0.0.61 deliberately. pain001 moved to xmlschema 4.x at that
+# release and camt053 is still on 3.x, so the two cannot be installed together
+# and `iso20022-mcp[all]` becomes unsatisfiable. Raising this floor made exactly
+# that happen in 0.0.6. It moves again once camt053 is on xmlschema 4.
+pain001-mcp = { version = ">=0.0.56,<0.0.61", optional = true }
 pacs008-mcp = { version = ">=0.0.9", optional = true }
 camt053-mcp = { version = ">=0.0.16", optional = true }
 acmt001-mcp = { version = ">=0.0.6", optional = true }
