@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+from typing import Any
 
 import iso20022_mcp
 
@@ -46,12 +47,12 @@ XMLSCHEMA_4_FLOORS = {
 }
 
 
-def _poetry() -> dict:
+def _poetry() -> dict[str, Any]:
     with PYPROJECT.open("rb") as handle:
         return dict(tomllib.load(handle)["tool"]["poetry"])
 
 
-def _dependencies() -> dict:
+def _dependencies() -> dict[str, Any]:
     return dict(_poetry()["dependencies"])
 
 
@@ -73,7 +74,7 @@ def test_the_family_servers_all_require_xmlschema_4() -> None:
     from packaging.requirements import Requirement
     from packaging.version import Version
 
-    behind = []
+    behind: list[str] = []
     for name, floor in XMLSCHEMA_4_FLOORS.items():
         requirement = Requirement(f"{name}{_spec(name)}")
         if requirement.specifier.contains(Version("0.0.1")):
@@ -125,9 +126,9 @@ def test_the_all_extra_covers_every_family_server() -> None:
     """`[all]` must mean all of them, or the name is a lie."""
     poetry = _poetry()
     listed = set(poetry["extras"]["all"])
-    assert set(XMLSCHEMA_4_FLOORS) <= listed, (
-        f"[all] is missing {set(XMLSCHEMA_4_FLOORS) - listed}"
-    )
+    assert (
+        set(XMLSCHEMA_4_FLOORS) <= listed
+    ), f"[all] is missing {set(XMLSCHEMA_4_FLOORS) - listed}"
 
 
 def test_dunder_version_matches_pyproject() -> None:
