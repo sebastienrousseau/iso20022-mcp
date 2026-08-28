@@ -30,10 +30,10 @@ mcp = ">=1.2,<2"
 # Backing family servers are optional: install only the families you need, or
 # `pip install iso20022-mcp[all]` for everything. The gateway imports them
 # lazily and returns an actionable error if a needed family is absent.
-pain001-mcp = { version = ">=0.0.56", optional = true }
-pacs008-mcp = { version = ">=0.0.4", optional = true }
-camt053-mcp = { version = ">=0.0.12", optional = true }
-acmt001-mcp = { version = ">=0.0.5", optional = true }
+pain001-mcp = { version = ">=0.0.62", optional = true }
+pacs008-mcp = { version = ">=0.0.9", optional = true }
+camt053-mcp = { version = ">=0.0.16", optional = true }
+acmt001-mcp = { version = ">=0.0.6", optional = true }
 # Optional agent-framework adapters (see iso20022_mcp/adapters.py). These are
 # heavy and conflict-prone, so they are strictly optional and are NOT test or
 # runtime dependencies; the base install never imports them.
