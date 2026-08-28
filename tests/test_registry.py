@@ -128,8 +128,16 @@ def test_list_all_servers(fake_backend):
     }
     ei = {e["message_type"] for e in out["exceptions_and_investigations"]}
     assert "camt.056.001.12" in ei and "camt.029.001.14" in ei
+    # Every specialised server the suite ships. A gateway that does not list one
+    # is a server an agent cannot discover, however well it works: `list_servers`
+    # is the only place most clients will ever learn these exist.
     assert {s["name"] for s in out["specialized"]} == {
         "reconcile-mcp",
         "camt-exceptions",
         "ap2-iso20022",
+        "bankstatementparser-mcp",
+        "structured-address-fix-mcp",
+        "iso20022-bank-profile-mcp",
+        "iso20022-readiness-suite-mcp",
+        "iso20022-evidence-pack-mcp",
     }

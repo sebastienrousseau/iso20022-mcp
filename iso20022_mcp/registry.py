@@ -151,6 +151,96 @@ SPECIALIZED_SERVERS: list[dict[str, Any]] = [
             "authorisation",
         ],
     },
+    {
+        "name": "bankstatementparser-mcp",
+        "package": "bankstatementparser-mcp",
+        "title": "Non-ISO statement parsing",
+        "does": (
+            "Read, validate and summarise statements that are not ISO 20022 "
+            "yet -- MT940, CSV, OFX and QFX -- detecting the format and "
+            "returning the same shape of answer as camt.053."
+        ),
+        "keywords": [
+            "mt940",
+            "csv statement",
+            "ofx",
+            "qfx",
+            "legacy statement",
+            "parse statement",
+        ],
+    },
+    {
+        "name": "structured-address-fix-mcp",
+        "package": "structured-address-fix-mcp",
+        "title": "Structured postal address remediation",
+        "does": (
+            "Classify a postal address, assess it against a scheme policy, and "
+            "remediate an address or a whole pacs.008 / pain.001 into the "
+            "structured form CBPR+ requires."
+        ),
+        "keywords": [
+            "structured address",
+            "unstructured address",
+            "postal address",
+            "hybrid address",
+            "cbpr+",
+            "remediate address",
+            "town",
+            "country",
+        ],
+    },
+    {
+        "name": "iso20022-bank-profile-mcp",
+        "package": "iso20022-bank-profile-mcp",
+        "title": "Bank clearing profiles",
+        "does": (
+            "Serve and lint against versioned bank-specific clearing profiles "
+            "-- the market-practice rules that sit beyond structural XSD "
+            "validation."
+        ),
+        "keywords": [
+            "clearing profile",
+            "market practice",
+            "rulebook",
+            "bank profile",
+            "scheme rules",
+            "lint payload",
+        ],
+    },
+    {
+        "name": "iso20022-readiness-suite-mcp",
+        "package": "iso20022-readiness-suite-mcp",
+        "title": "Readiness scoring and remediation",
+        "does": (
+            "Score a payload against a clearing profile, propose the compliant "
+            "form, and simulate the response a bank would send."
+        ),
+        "keywords": [
+            "readiness",
+            "am i ready",
+            "score",
+            "remediate",
+            "simulate bank response",
+            "compliance check",
+        ],
+    },
+    {
+        "name": "iso20022-evidence-pack-mcp",
+        "package": "iso20022-evidence-pack-mcp",
+        "title": "Sealed audit evidence packs",
+        "does": (
+            "Compile readiness findings, remediation diffs and simulated "
+            "responses into a sealed, verifiable evidence pack for an auditor."
+        ),
+        "keywords": [
+            "evidence",
+            "audit",
+            "attestation",
+            "seal",
+            "provenance",
+            "compliance record",
+        ],
+    },
 ]
 
 # Curated catalogue for keyword/use-case search. Kept small and human: it maps
