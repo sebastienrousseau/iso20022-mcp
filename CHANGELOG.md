@@ -7,6 +7,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.10] - 2026-08-29
+
+### Fixed
+
+- **`poetry install` no longer fails on Python 3.14.** The optional
+  `crewai` extra caps Python at `<3.14` and carried no marker of its own,
+  while this project allows `<4.0`. On a 3.14 interpreter the resolver
+  therefore refused to solve at all — even though `crewai` is optional and
+  nothing in the package imports it.
+
+  That broke the **SBOM job** in the release workflow, which runs
+  `poetry install --only main`. The 0.0.9 release published to PyPI
+  successfully and the SBOM step failed beside it, which is the confusing
+  combination this fixes: a green package and a red workflow.
+
+  The fault was pre-existing rather than introduced by 0.0.9 — it
+  reproduces on the previous commit — but it surfaced when 0.0.9's release
+  ran on a 3.14 runner.
+
 ## [0.0.9] - 2026-08-29
 
 Brings this repository onto the suite conformance gate. It had no
