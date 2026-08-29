@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iso20022-mcp"
-version = "0.0.9"
+version = "0.0.10"
 description = "Unified Model Context Protocol (MCP) gateway for ISO 20022: one small set of meta-tools (search, describe, validate, generate, parse) routing across the pain, pacs, camt and acmt message families."
 authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
 license = "Apache-2.0 OR MIT"
@@ -44,7 +44,11 @@ acmt001-mcp = { version = ">=0.0.8", optional = true }
 # heavy and conflict-prone, so they are strictly optional and are NOT test or
 # runtime dependencies; the base install never imports them.
 langchain-core = { version = ">=0.2", optional = true }
-crewai = { version = ">=0.51", optional = true }
+# crewai caps Python at <3.14 and carries no marker of its own, so on a
+# 3.14 interpreter `poetry install` fails to resolve even though the
+# package is optional and nothing imports it. That broke the SBOM job
+# in the release workflow, which runs `poetry install --only main`.
+crewai = { version = ">=0.51", optional = true, python = "<3.14" }
 llama-index-core = { version = ">=0.10", optional = true }
 
 # Transitive, via `mcp` -> `pyjwt[crypto]`. Nothing in this tree
