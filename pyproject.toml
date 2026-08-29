@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iso20022-mcp"
-version = "0.0.8"
+version = "0.0.9"
 description = "Unified Model Context Protocol (MCP) gateway for ISO 20022: one small set of meta-tools (search, describe, validate, generate, parse) routing across the pain, pacs, camt and acmt message families."
 authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
 license = "Apache-2.0 OR MIT"
@@ -82,7 +82,13 @@ tomli = { version = ">=2.0", python = "<3.11" }
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+# tests/test_suite_conformance.py is generated and vendored from one
+# canonical copy shared across the suite, and checksummed by its own
+# test. The suite uses three different line lengths, so letting each
+# repository's formatter rewrite it would make the checksum
+# unsatisfiable everywhere.
 [tool.black]
+extend-exclude = "tests/test_suite_conformance\\.py"
 line-length = 79
 target-version = ['py310']
 
