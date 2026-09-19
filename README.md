@@ -1,12 +1,14 @@
 # iso20022-mcp: The Unified MCP Gateway for ISO 20022
 
+[![Glama MCP server score](https://glama.ai/mcp/servers/sebastienrousseau/iso20022-mcp/badges/score.svg)](https://glama.ai/mcp/servers/sebastienrousseau/iso20022-mcp)
+
 **One [Model Context Protocol][mcp] server, one small set of meta-tools —
 `search`, `list_families`, `describe`, `validate`, `generate`, `parse` — that
 route across every ISO 20022 message family (`pain` · `pacs` · `camt` ·
 `acmt`).** Install one thing, discover the whole suite: an agent sees a handful
 of verbs instead of the 60+ tools spread across five individual servers.
 
-> **Latest release: v0.0.4** — 7 routing meta-tools over stdio, light core
+> **Latest release: v0.0.11** — 7 routing meta-tools over stdio, light core
 > (only `mcp`), backing family servers as optional extras, actionable
 > structured errors on every `validate`/`generate` failure, for Python 3.10+.
 > The front door to the [ISO 20022 MCP Suite](#the-iso-20022-mcp-suite).
@@ -32,7 +34,7 @@ one, add the rest as your workflow grows.
 
 | Server | Scope | Surface | Install | Use it when |
 | --- | --- | --- | --- | --- |
-| [`camt053-mcp`][camt053-mcp] | ISO 20022 `camt.053`/`camt.052` bank statements: parse, validate, filter, reverse; MT940/MT942 migration; CBPR+ readiness; journal export | 22 MCP tools · 4 prompts · 3 resources | `pip install camt053-mcp` | You work with bank-to-customer statements end to end — the suite's flagship |
+| [`camt053-mcp`][camt053-mcp] | ISO 20022 `camt.053`/`camt.052` bank statements: parse, validate, filter, reverse; MT940/MT942 migration; CBPR+ readiness; journal export | 24 MCP tools · 4 prompts · 3 resources | `pip install camt053-mcp` | You work with bank-to-customer statements end to end — the suite's flagship |
 | [`iso20022-mcp`](#install) | Unified gateway: `search` / `describe` / `validate` / `generate` / `parse` meta-tools routed across the `pain` · `pacs` · `camt` · `acmt` families | 7 meta-tools | `pip install "iso20022-mcp[all]"` | You want one entry point to every message family — **this package** |
 | [`reconcile-mcp`][reconcile-mcp] | Matches expected `pain.001` payments against observed `camt.053` entries — exact, partial, one-to-many, many-to-one, every match scored and explained | 7 MCP tools | `pip install reconcile-mcp` | You need explainable statement/payment reconciliation |
 | [`bankstatementparser-mcp`][bsp-mcp] | Multi-format statement ingestion: ISO 20022 CAMT.053 and pain.001, SWIFT MT940, OFX/QFX, CSV | 5 MCP tools · 1 prompt · 1 resource | `pip install bankstatementparser-mcp` | Your statements arrive in mixed or legacy formats |
