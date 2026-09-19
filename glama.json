@@ -5,7 +5,7 @@
   ],
   "title": "iso20022-mcp",
   "display_name": "ISO 20022 MCP",
-  "description": "Unified Model Context Protocol (MCP) gateway for ISO 20022. Exposes one small set of meta-tools (search, describe, validate, generate, parse) that route across the pain, pacs, camt and acmt message families, so an agent works with initiation, clearing/settlement, cash-management and account-management messages through a single consistent interface instead of one server per message type. Apache-2.0, pure Python over stdio.",
+  "description": "Unified Model Context Protocol (MCP) gateway for ISO 20022. Exposes one small set of meta-tools (search, describe, validate, generate, parse) that route across the pain, pacs, camt and acmt message families, so an agent works with initiation, clearing/settlement, cash-management and account-management messages through a single consistent interface instead of one server per message type. Apache-2.0, pure Python over stdio, streamable HTTP or SSE.",
   "version": "0.0.11",
   "repository": "https://github.com/sebastienrousseau/iso20022-mcp",
   "homepage": "https://iso20022-mcp.com",
