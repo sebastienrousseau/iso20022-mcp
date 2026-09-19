@@ -6,8 +6,8 @@
 
 | Version | Supported |
 | ------- | --------- |
-| 0.0.9   | :white_check_mark: |
-| < 0.0.9 | :x:               |
+| 0.0.11   | :white_check_mark: |
+| < 0.0.11 | :x:                |
 
 ## Reporting a vulnerability
 
@@ -43,6 +43,16 @@ function by name. Two properties matter:
 If you extend the registry, keep both. The moment a caller-supplied string
 reaches an import, this becomes a very different package.
 
+## Transports
+
+The server speaks MCP over stdio by default. `--transport
+streamable-http` and `--transport sse` open a listener that binds
+`127.0.0.1` unless `--host` says otherwise and carries no authentication
+or TLS of its own. Do not bind a routable address without a gateway in
+front of it that adds both. Records handed to the tools are routed, not
+executed; treat payment data passed through them as PII that reaches the
+model's context and any transcript kept of it.
+
 ## Availability
 
 Family servers are imported lazily, and each import costs roughly 550–630 ms
@@ -50,3 +60,22 @@ Family servers are imported lazily, and each import costs roughly 550–630 ms
 it does not need can therefore force several seconds of import work in a
 fresh process. It is bounded — four families, once each per process — but
 worth knowing if you spawn a process per request.
+
+## Continuous integration
+
+- `ci.yml` runs ruff, black, mypy --strict, pytest with the 100%
+  line+branch coverage gate and the benchmark on every push and pull
+  request, on Python 3.10 to 3.14.
+- `codeql.yml` runs GitHub's CodeQL Python analysis on every push, pull
+  request and weekly.
+- `scorecard.yml` publishes the OpenSSF Scorecard weekly; every action
+  in every workflow is pinned by commit SHA.
+- `dco.yml` requires a `Signed-off-by:` trailer on every commit.
+- `mcp-inspect.yml` lists the tools through the MCP Inspector over
+  stdio, streamable HTTP and SSE.
+- `versions.yml` checks that every restatement of the version agrees;
+  `release-consistency.yml` checks daily that the tree agrees with PyPI.
+- Dependabot (`.github/dependabot.yml`) proposes pip and GitHub Actions
+  updates weekly.
+- `release.yml` publishes to PyPI through OIDC trusted publishing with
+  SLSA build provenance, cosign signatures and SBOMs.

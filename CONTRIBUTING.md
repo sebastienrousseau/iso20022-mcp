@@ -18,6 +18,13 @@ python benches/bench_gateway.py --quick    # the benchmark still runs
 
 `pytest` fails below **100% branch coverage**.
 
+## Sign-off (Required)
+
+Every commit **must** carry a `Signed-off-by:` trailer, which is you
+certifying the [Developer Certificate of Origin](DCO.txt). `git commit -s`
+adds it; the `DCO` workflow fails a pull request that lacks one. To fix an
+existing branch: `git rebase --signoff main && git push --force-with-lease`.
+
 **Install `[all]`.** Without the family extras the gateway resolves nothing,
 and both the tests and the benchmark measure a degraded path rather than the
 real one.
@@ -48,6 +55,11 @@ import is ~550–630 ms and is the figure worth watching. It asserts no
 threshold, but CI runs `--quick` so a benchmark that stops compiling fails
 the build rather than rotting.
 
+## Decisions
+
+A change that shapes the server (a new transport, a new family, a new
+registration pattern) gets a record in [`docs/adr/`](docs/adr/index.md).
+
 ## The shared conformance file
 
 `tests/test_suite_conformance.py` is generated from one canonical copy
@@ -56,6 +68,12 @@ shared across all 32 repositories. **Do not edit it here.**
 ## Versioning
 
 **Versions increment by 0.0.1.** `0.1.0` follows `0.0.999`.
+
+## Governance
+
+Roles, decision making and how to become a maintainer are in
+[`GOVERNANCE.md`](GOVERNANCE.md); the release process is in
+[`RELEASING.md`](RELEASING.md).
 
 ## Licence
 

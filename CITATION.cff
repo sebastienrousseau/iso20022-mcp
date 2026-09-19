@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+cff-version: 1.2.0
+message: "If you use iso20022-mcp in research or production write-ups, please cite it as below."
+type: software
+title: "iso20022-mcp: Unified Model Context Protocol gateway for ISO 20022"
+abstract: >-
+  A Model Context Protocol server that routes one small set of meta-tools
+  (search, describe, validate, generate, parse) across the ISO 20022 pain,
+  pacs, camt and acmt message families to their dedicated servers, so an
+  AI agent installs one thing and discovers the whole suite.
+authors:
+  - family-names: Rousseau
+    given-names: Sebastien
+    email: sebastian.rousseau@gmail.com
+version: "0.0.11"
+date-released: "2026-08-29"
+license: "Apache-2.0 OR MIT"
+repository-code: "https://github.com/sebastienrousseau/iso20022-mcp"
+url: "https://iso20022-mcp.com"
+keywords:
+  - ISO 20022
+  - payments
+  - gateway
+  - Model Context Protocol
+  - MCP
+  - AI agents
+  - banking
