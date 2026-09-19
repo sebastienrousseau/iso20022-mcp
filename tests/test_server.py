@@ -22,6 +22,7 @@ import pytest
 
 pytest.importorskip("mcp")
 
+import iso20022_mcp._mcp_compat as compat  # noqa: E402
 import iso20022_mcp.server as srv  # noqa: E402
 from iso20022_mcp import __version__  # noqa: E402
 
@@ -49,7 +50,7 @@ def test_all_tools_registered():
 
 
 def test_server_version_override():
-    assert srv.server._mcp_server.version == __version__
+    assert compat.server_version(srv.server) == __version__
 
 
 def test_search_tool():
@@ -156,7 +157,7 @@ def test_generate_tool_output_passes_mcp_validation(fake_backend):
             {"message_type": "pain.001", "records": [{"a": 1}]},
         )
     )
-    structured = result[1] if isinstance(result, tuple) else result
+    structured = compat.result_structured(result)
     assert structured["xml"] == "<pain.001/>"
 
 
@@ -224,9 +225,10 @@ def test_generate_records_schema_documents_pain001_fields():
     # it must name the aliases, formats and computed fields.
     tool = asyncio.run(srv.server.list_tools())
     generate_tool = next(t for t in tool if t.name == "generate")
-    records_desc = generate_tool.inputSchema["properties"]["records"][
-        "description"
-    ]
+    schema = getattr(generate_tool, "input_schema", None) or (
+        generate_tool.inputSchema
+    )
+    records_desc = schema["properties"]["records"]["description"]
     for fragment in (
         "alias 'amount'",
         "alias 'payment_currency'",
