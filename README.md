@@ -8,9 +8,10 @@ route across every ISO 20022 message family (`pain` · `pacs` · `camt` ·
 `acmt`).** Install one thing, discover the whole suite: an agent sees a handful
 of verbs instead of the 60+ tools spread across five individual servers.
 
-> **Latest release: v0.0.11** — 7 routing meta-tools over stdio, light core
-> (only `mcp`), backing family servers as optional extras, actionable
-> structured errors on every `validate`/`generate` failure, for Python 3.10+.
+> **Latest release: v0.0.11** — 7 routing meta-tools over stdio, streamable
+> HTTP or SSE, light core (only `mcp`), backing family servers as optional
+> extras, actionable structured errors on every `validate`/`generate`
+> failure, for Python 3.10+.
 > The front door to the [ISO 20022 MCP Suite](#the-iso-20022-mcp-suite).
 
 ## Why a gateway
@@ -78,6 +79,32 @@ MCP client config (e.g. Claude Desktop):
     "iso20022": {
       "command": "iso20022-mcp"
     }
+  }
+}
+```
+
+## Transports
+
+One command line, three transports:
+
+| Command | Transport | Endpoint | Protocol revisions |
+| :--- | :--- | :--- | :--- |
+| `iso20022-mcp` | stdio | the client spawns the process | 2026-07-28, 2025-11-25 |
+| `iso20022-mcp --transport streamable-http` | Streamable HTTP | `http://127.0.0.1:8000/mcp` | 2026-07-28 (stateless, `server/discover`) and 2025-11-25 (`initialize`, `Mcp-Session-Id`) on the same endpoint; responses stream as server-sent events, `GET` opens the server-to-client stream |
+| `iso20022-mcp --transport sse` | HTTP+SSE (2024-11-05) | `http://127.0.0.1:8000/sse` and `/messages/` | for clients that still expect the older transport |
+
+`--host` and `--port` change the bind address (defaults `127.0.0.1` and
+`8000`). The HTTP transports carry no authentication of their own: bind
+loopback, or put the server behind a gateway you trust before binding a
+routable address. Every release is verified over streamable HTTP with
+[scout](https://github.com/sebastienrousseau/scout) in both protocol
+eras and over SSE with the MCP SDK client; see
+[ADR 0001](docs/adr/0001-three-transports-one-command-line.md).
+
+```json
+{
+  "mcpServers": {
+    "iso20022": { "url": "http://127.0.0.1:8000/mcp" }
   }
 }
 ```
