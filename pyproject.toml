@@ -73,7 +73,7 @@ pytest = ">=9.0.3,<10.0.0"
 pytest-cov = ">=6.0.0,<8.0.0"
 black = "^26.3.1"
 ruff = "^0.1.0"
-mypy = "^1.11.0"
+mypy = ">=1.11,<3.0"
 bandit = "^1.7.0"
 # Used by tests/test_extras_resolve.py to parse the dependency constraints in
 # this file. Both arrive transitively via pytest, but declared here because a
