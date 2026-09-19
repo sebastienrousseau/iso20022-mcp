@@ -191,7 +191,7 @@ def test_main_runs_server(monkeypatch):
     monkeypatch.setattr(
         srv.server, "run", lambda: called.setdefault("ran", True)
     )
-    srv.main()
+    srv.main([])
     assert called["ran"] is True
 
 

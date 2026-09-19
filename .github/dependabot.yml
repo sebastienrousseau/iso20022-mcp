@@ -1,0 +1,44 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "sebastienrousseau"
+    labels:
+      - "dependencies"
+      - "automated"
+    commit-message:
+      prefix: "chore(deps):"
+      include: "scope"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "python"
+      # The family servers are optional extras whose floors move together
+      # by hand (tests/test_extras_resolve.py asserts the four agree on
+      # one xmlschema major); a bump proposed one at a time would put
+      # `[all]` back into the unsatisfiable shape that broke 0.0.6.
+      - dependency-name: "pain001-mcp"
+      - dependency-name: "pacs008-mcp"
+      - dependency-name: "camt053-mcp"
+      - dependency-name: "acmt001-mcp"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    reviewers:
+      - "sebastienrousseau"
+    labels:
+      - "ci/cd"
+      - "automated"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
