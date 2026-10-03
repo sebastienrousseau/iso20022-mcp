@@ -95,7 +95,12 @@ _RECORDS_DESC = (
     description=(
         "Search the ISO 20022 catalogue by use-case, message type or keyword "
         "(e.g. 'reconciliation', 'make a payment', 'pacs.008') and get the "
-        "matching message types, their family, and which package provides them."
+        "matching message types, their family, and which package provides them. "
+        "When to use: Use this first to discover which ISO 20022 message type "
+        "fits your workflow and which backing package supplies it. "
+        "When NOT to use: Do not use to inspect fields or validate XML; use "
+        "'describe' or 'validate' once the message type is known. "
+        "Behavior: Pure in-memory lookup; read-only and idempotent with zero network or filesystem I/O."
     ),
 )
 def search(
@@ -116,7 +121,11 @@ def search(
     description=(
         "List every ISO 20022 family the gateway routes to (pain, pacs, camt, "
         "acmt): its capabilities, backing package, and whether that package is "
-        "installed in this environment."
+        "installed in this environment. "
+        "When to use: Use to check environment readiness and verify whether optional "
+        "backing packages (pain001-mcp, pacs008-mcp, camt053-mcp, acmt001-mcp) are installed. "
+        "When NOT to use: Do not use to search specific schemas; use 'search' or 'describe'. "
+        "Behavior: Pure in-memory introspection; read-only and idempotent."
     ),
 )
 def list_families() -> dict[str, Any]:
@@ -130,7 +139,12 @@ def list_families() -> dict[str, Any]:
         "List the whole ISO 20022 suite the gateway knows: the message "
         "families (pain/pacs/camt/acmt), the Exceptions & Investigations "
         "messages (camt.056/camt.029), and the specialized servers "
-        "(reconciliation, agent-payment bridge) with what each does."
+        "(reconciliation, agent-payment bridge) with what each does. "
+        "When to use: Use to discover available specialized servers across the suite "
+        "and route cross-cutting payments workflows. "
+        "When NOT to use: Do not use for operational message parsing or generation; "
+        "call specific gateway tools ('generate', 'parse', 'validate'). "
+        "Behavior: Pure in-memory catalog listing; read-only and idempotent."
     ),
 )
 def list_servers() -> dict[str, Any]:
@@ -142,7 +156,12 @@ def list_servers() -> dict[str, Any]:
     annotations=_PURE_READ,
     description=(
         "Describe a message type: its required fields and input JSON Schema, "
-        "resolved from the family's backing server."
+        "resolved from the family's backing server. "
+        "When to use: Use after 'search' to obtain the schema and required field "
+        "names needed to construct flat records before calling 'validate' or 'generate'. "
+        "When NOT to use: Do not use on raw XML payloads; use 'parse' instead. "
+        "Behavior: Read-only, idempotent resolution from local schemas. Errors return "
+        "a structured {'error': ...} payload rather than raising."
     ),
 )
 def describe(
@@ -166,7 +185,12 @@ def describe(
     annotations=_PURE_READ,
     description=(
         "Validate records for a message type against its JSON Schema, via the "
-        "family's backing server."
+        "family's backing server. "
+        "When to use: Use before 'generate' to verify record field types, required fields, "
+        "date formats (YYYY-MM-DD), and IBAN/BIC constraints without generating XML. "
+        "When NOT to use: Do not use to validate raw XML documents; use the backing "
+        "server's XSD validation tools or 'parse'. "
+        "Behavior: Pure deterministic validation; read-only and idempotent with zero network I/O."
     ),
 )
 def validate(
@@ -213,7 +237,12 @@ def _normalize_generated(message_type: str, result: Any) -> dict[str, Any]:
         "and interbank families (pain, pacs, acmt); statement families "
         "(camt) are inbound-only and return an explanatory error. On "
         "failure the 'error' value lists every missing or invalid field "
-        "at once — fix them all and retry once."
+        "at once — fix them all and retry once. "
+        "When to use: Use to create standardized XML messages for outbound initiation "
+        "and interbank transfer families (pain.001, pacs.008, acmt.001, camt.056). "
+        "When NOT to use: Do not use for inbound reporting messages (camt.053); statement "
+        "families are inbound-only and have no generator. "
+        "Behavior: Pure transformation; read-only and idempotent with no external side-effects."
     ),
 )
 def generate(
@@ -256,7 +285,12 @@ def generate(
         "(e.g. camt.053) only. The initiation families pain and acmt are "
         "outbound-only — they have NO parser here, so do not attempt a "
         "generate→parse round-trip for pain.001 or acmt.001; use "
-        "'validate' or the backing server's XSD validation instead."
+        "'validate' or the backing server's XSD validation instead. "
+        "When to use: Use to extract structured transactions, entries, debtor/creditor "
+        "data, and balances from inbound messages (pacs.008 customer credit transfers, "
+        "camt.053 statements). "
+        "When NOT to use: Do not use on outbound initiation families (pain.001, acmt.001). "
+        "Behavior: Pure in-memory XML parsing; read-only and idempotent."
     ),
 )
 def parse(

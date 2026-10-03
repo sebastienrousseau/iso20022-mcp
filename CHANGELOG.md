@@ -7,25 +7,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.0.12] - 2026-10-03
 
 ### Added
 
-- `--transport streamable-http` and `--transport sse`, with `--host` and
-  `--port`. Streamable HTTP serves both current protocol revisions
-  (2026-07-28 stateless with `server/discover`, and 2025-11-25 with the
-  `initialize` handshake) on one endpoint and streams responses as
+- Multi-transport support: `--transport streamable-http` and `--transport sse`,
+  with `--host` and `--port`. Streamable HTTP serves both current protocol
+  revisions (2026-07-28 stateless with `server/discover`, and 2025-11-25 with
+  the `initialize` handshake) on one endpoint and streams responses as
   server-sent events; `sse` serves the older HTTP+SSE transport. stdio
   stays the default and is unchanged. `--version` prints the version.
-  ADR 0001 records the decision.
+- Dual licensing: Apache-2.0 OR MIT, with canonical `LICENSE-APACHE`,
+  `LICENSE-MIT`, and `LICENSES/` directory.
+- `AGENTS.md` defining repository invariants, SemVer rules, and verification gates.
+- `Makefile` providing standard developer targets (`test`, `lint`, `format`,
+  `type-check`, `security`, `check`).
+- Enhanced TDQS (Tool Definition Quality Score) tool metadata with explicit
+  purpose, usage guidelines, behavioral transparency, and parameter semantics.
 
 ### Changed
 
-- The server is built through a small compatibility shim so it runs on
-  both supported majors of the `mcp` SDK: 2.x (`MCPServer`, the
-  2026-07-28 stateless revision with `server/discover`) and 1.x
-  (`FastMCP`). The dependency range is now `mcp>=1.2,<3`, so a fresh
-  install gets 2.x and speaks the current protocol revision.
+- Replaced ambiguous `LICENSE` stub with standard license files to resolve
+  license detection across package registries and Glama.
+- Upgraded MCP SDK compatibility shim so it runs on both supported majors of
+  the `mcp` SDK: 2.x (`MCPServer`, the 2026-07-28 stateless revision with
+  `server/discover`) and 1.x (`FastMCP`).
+- Bumped version to 0.0.12 across all manifests (`pyproject.toml`, `glama.json`,
+  `server.json`, `CITATION.cff`).
 
 ## [0.0.11] - 2026-08-29
 
