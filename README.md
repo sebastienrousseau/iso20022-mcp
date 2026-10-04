@@ -1,6 +1,20 @@
+<!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
+
 # iso20022-mcp: The Unified MCP Gateway for ISO 20022
 
-[![Glama MCP server score](https://glama.ai/mcp/servers/sebastienrousseau/iso20022-mcp/badges/score.svg)](https://glama.ai/mcp/servers/sebastienrousseau/iso20022-mcp)
+<p align="center">
+  <a href="https://github.com/sebastienrousseau/iso20022-mcp/actions"><img src="https://github.com/sebastienrousseau/iso20022-mcp/workflows/ci/badge.svg?style=for-the-badge&logo=github" alt="Build" /></a>
+  <a href="https://pypi.org/project/iso20022-mcp/"><img src="https://img.shields.io/pypi/v/iso20022-mcp.svg?style=for-the-badge&color=fc8d62&logo=pypi" alt="PyPI" /></a>
+  <a href="https://glama.ai/mcp/servers/sebastienrousseau/iso20022-mcp"><img src="https://glama.ai/mcp/servers/sebastienrousseau/iso20022-mcp/badges/score.svg?style=for-the-badge" alt="Glama MCP score" /></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/iso20022-mcp"><img src="https://img.shields.io/ossf-scorecard/github.com/sebastienrousseau/iso20022-mcp?style=for-the-badge&label=OpenSSF%20Scorecard&logo=openssf" alt="OpenSSF Scorecard" /></a>
+  <a href="LICENSE-APACHE"><img src="https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue.svg?style=for-the-badge" alt="License: Apache-2.0 OR MIT" /></a>
+  <a href="https://github.com/sebastienrousseau/iso20022-mcp/blob/main/docs/POLICIES.md"><img src="https://img.shields.io/badge/python-%3E%3D3.10-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.10+" /></a>
+</p>
+
+<p align="center">
+  <img src=".github/demo.gif" alt="iso20022-mcp Demo" width="100%" />
+</p>
+
 
 **One [Model Context Protocol][mcp] server, one small set of meta-tools —
 `search`, `list_families`, `describe`, `validate`, `generate`, `parse` — that
@@ -8,7 +22,7 @@ route across every ISO 20022 message family (`pain` · `pacs` · `camt` ·
 `acmt`).** Install one thing, discover the whole suite: an agent sees a handful
 of verbs instead of the 60+ tools spread across five individual servers.
 
-> **Latest release: v0.0.11** — 7 routing meta-tools over stdio, streamable
+> **Latest release: v0.0.12** — 7 routing meta-tools over stdio, streamable
 > HTTP or SSE, light core (only `mcp`), backing family servers as optional
 > extras, actionable structured errors on every `validate`/`generate`
 > failure, for Python 3.10+.
@@ -97,7 +111,7 @@ One command line, three transports:
 `8000`). The HTTP transports carry no authentication of their own: bind
 loopback, or put the server behind a gateway you trust before binding a
 routable address. Every release is verified over streamable HTTP with
-[scout](https://github.com/sebastienrousseau/scout) in both protocol
+[passmcp](https://github.com/sebastienrousseau/passmcp) in both protocol
 eras and over SSE with the MCP SDK client; see
 [ADR 0001](docs/adr/0001-three-transports-one-command-line.md).
 
@@ -196,9 +210,14 @@ pytest                      # 100% branch coverage gate (backends faked)
 ruff check iso20022_mcp tests && black --check iso20022_mcp tests && mypy iso20022_mcp
 ```
 
-## Licence
+## License
 
-Licensed under the [Apache License, Version 2.0](LICENSE).
+This project is dual-licensed under either:
+
+* Apache License, Version 2.0 ([`LICENSE-APACHE`](LICENSE-APACHE) or <https://www.apache.org/licenses/LICENSE-2.0>)
+* MIT License ([`LICENSE-MIT`](LICENSE-MIT) or <https://opensource.org/licenses/MIT>)
+
+at your option.
 
 ---
 
