@@ -11,6 +11,11 @@
   <a href="https://github.com/sebastienrousseau/iso20022-mcp/blob/main/docs/POLICIES.md"><img src="https://img.shields.io/badge/python-%3E%3D3.10-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.10+" /></a>
 </p>
 
+<p align="center">
+  <img src=".github/demo.gif" alt="iso20022-mcp Demo" width="100%" />
+</p>
+
+
 **One [Model Context Protocol][mcp] server, one small set of meta-tools —
 `search`, `list_families`, `describe`, `validate`, `generate`, `parse` — that
 route across every ISO 20022 message family (`pain` · `pacs` · `camt` ·
