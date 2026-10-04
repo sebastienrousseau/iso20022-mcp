@@ -7,6 +7,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.13] - 2026-10-04
+
+### Changed
+
+- Update release version to v0.0.13 across all manifests.
+- Update locked dependencies to resolve transitive vulnerabilities.
+
 ## [0.0.12] - 2026-10-03
 
 ### Added
@@ -144,5 +151,7 @@ Brings this repository onto the suite conformance gate. It had no
 
 - `tests/test_extras_resolve.py`, guarding both failures above.
 
+[0.0.13]: https://github.com/sebastienrousseau/iso20022-mcp/releases/tag/v0.0.13
+[0.0.12]: https://github.com/sebastienrousseau/iso20022-mcp/releases/tag/v0.0.12
 [0.0.9]: https://github.com/sebastienrousseau/iso20022-mcp/releases/tag/v0.0.9
 [0.0.8]: https://github.com/sebastienrousseau/iso20022-mcp/releases/tag/v0.0.8
