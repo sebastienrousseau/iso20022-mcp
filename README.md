@@ -22,7 +22,7 @@ route across every ISO 20022 message family (`pain` · `pacs` · `camt` ·
 `acmt`).** Install one thing, discover the whole suite: an agent sees a handful
 of verbs instead of the 60+ tools spread across five individual servers.
 
-> **Latest release: v0.0.12** — 7 routing meta-tools over stdio, streamable
+> **Latest release: v0.0.13**: 7 routing meta-tools over stdio, streamable
 > HTTP or SSE, light core (only `mcp`), backing family servers as optional
 > extras, actionable structured errors on every `validate`/`generate`
 > failure, for Python 3.10+.
