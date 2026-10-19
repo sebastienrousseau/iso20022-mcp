@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2023-2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 # CI test + lint toolchain, hash-pinned in ci.txt so every `pip install` in
 # .github/workflows is pinned (OpenSSF Scorecard Pinned-Dependencies). The
 # package itself installs with `--no-deps` on top of this.
@@ -14,3 +16,4 @@ hypothesis>=6.100
 ruff>=0.1,<0.18
 black>=26.3.1
 mypy>=1.11,<3.0
+reuse[charset-normalizer]>=5.0

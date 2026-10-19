@@ -1,19 +1,84 @@
+<!-- SPDX-FileCopyrightText: 2023-2026 Sebastien Rousseau <sebastian.rousseau@gmail.com> -->
 <!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
 
 # Security Policy
 
 ## Supported versions
 
+Only the latest release receives security fixes. Upgrade with
+`pip install -U "iso20022-mcp[all]"`; the [changelog](CHANGELOG.md)
+says what each release changed and anything you need to do.
+
 | Version | Supported |
 | ------- | --------- |
-| 0.0.11   | :white_check_mark: |
-| < 0.0.11 | :x:                |
+| 0.0.16 (latest) | :white_check_mark: |
+| < 0.0.16 | :x: |
 
 ## Reporting a vulnerability
 
 Report privately through
-[GitHub Security Advisories](https://github.com/sebastienrousseau/iso20022-mcp/security/advisories/new).
+[GitHub private vulnerability reporting](https://github.com/sebastienrousseau/iso20022-mcp/security/advisories/new).
 Please do not open a public issue for a security problem.
+
+## How a report is handled
+
+1. **Acknowledge** within 7 days, in the private advisory.
+2. **Assess** severity (CVSS) and affected versions, and agree a fix plan
+   with the reporter.
+3. **Fix** in a private fork of the advisory, with a regression test; the
+   target is 30 days for critical and high severity, and never more than
+   60 days for anything medium or above.
+4. **Release** a patched version, publish the GitHub Security Advisory
+   (requesting a CVE where one applies), and name the advisory in the
+   changelog and release notes.
+5. **Credit** the reporter in the advisory and the release notes, unless
+   they ask not to be named.
+
+A vulnerability in a dependency is handled the same way: the dependency
+is constrained in `pyproject.toml` so that no affected version can resolve,
+and a release goes out.
+
+## Verifying a release
+
+Every distribution on PyPI and on the GitHub release is built by
+`release.yml` from a signed tag and carries three independent proofs:
+
+```sh
+# SLSA build provenance (GitHub artifact attestation)
+gh attestation verify iso20022_mcp-<version>-py3-none-any.whl \
+  --repo sebastienrousseau/iso20022-mcp
+
+# Keyless sigstore signature, bound to the release workflow on a v* tag
+cosign verify-blob \
+  --certificate iso20022_mcp-<version>-py3-none-any.whl.pem \
+  --signature iso20022_mcp-<version>-py3-none-any.whl.sig \
+  --certificate-identity-regexp '^https://github.com/sebastienrousseau/iso20022-mcp/\.github/workflows/release\.yml@refs/tags/v' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  iso20022_mcp-<version>-py3-none-any.whl
+```
+
+PyPI also shows PEP 740 attestations for each file. Builds are
+reproducible: `poetry build` on the tagged commit, with the hash-pinned
+tooling in `requirements/build.txt`, produces files with the same SHA-256
+as those published. Tags are SSH-signed (`git tag -v v<version>`).
+
+## What you can expect
+
+- The gateway is read-only: every tool is annotated `readOnlyHint`,
+  `idempotentHint`, not destructive and closed-world. It opens no file
+  path and reaches no network service on a caller's behalf.
+- It imports only modules named in its own registry table; no caller
+  input reaches an import or an attribute lookup.
+- It holds no credentials and stores nothing between calls.
+- It does **not** authenticate callers or encrypt traffic. Over stdio
+  that is the client's process boundary; for the HTTP transports see
+  [Transports](#transports).
+- It does **not** sanitise payment data. Records and XML you pass in reach
+  the backing family package and the model's context unchanged.
+
+The full argument, with threats, trust boundaries and evidence, is in
+[`docs/assurance-case.md`](docs/assurance-case.md); the latest review is
+[`docs/security-review.md`](docs/security-review.md).
 
 ## What this package is
 

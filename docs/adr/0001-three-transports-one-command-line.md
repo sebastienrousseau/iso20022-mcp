@@ -1,3 +1,4 @@
+<!-- SPDX-FileCopyrightText: 2023-2026 Sebastien Rousseau <sebastian.rousseau@gmail.com> -->
 <!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
 
 # 0001. Serve stdio, streamable HTTP and SSE from one command line
