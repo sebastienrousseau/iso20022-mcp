@@ -1,3 +1,4 @@
+<!-- SPDX-FileCopyrightText: 2023-2026 Sebastien Rousseau <sebastian.rousseau@gmail.com> -->
 <!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
 
 # iso20022-mcp: The Unified MCP Gateway for ISO 20022
