@@ -60,13 +60,13 @@ jobs:
       - name: Install this package
         run: |
           pip install --require-hashes -r requirements/ci.txt
-          pip install --no-deps .
+          pip install --no-deps -e .
 
       - name: Ruff check
-        run: ruff check iso20022_mcp/ tests/ benches/
+        run: ruff check iso20022_mcp/ tests/ benches/ fuzz/
 
       - name: Black check
-        run: black --check iso20022_mcp/ tests/ benches/
+        run: black --check iso20022_mcp/ tests/ benches/ fuzz/
 
       - name: Mypy
         run: mypy iso20022_mcp/
