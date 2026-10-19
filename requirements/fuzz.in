@@ -1,0 +1,12 @@
+# Atheris fuzz job (.github/workflows/fuzz.yml): the CI toolchain plus
+# atheris and every backing family server, so routing reaches real code.
+# Atheris ships Linux x86_64 wheels only, so this is compiled for that.
+# Regenerate:
+#   uv pip compile --generate-hashes --python-platform x86_64-manylinux_2_17 \
+#     --python-version 3.12 requirements/fuzz.in -o requirements/fuzz.txt
+-r ci.in
+atheris>=3.0.0
+pain001-mcp>=0.0.62
+pacs008-mcp>=0.0.9
+camt053-mcp>=0.0.17
+acmt001-mcp>=0.0.8
