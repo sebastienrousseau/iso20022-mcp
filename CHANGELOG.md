@@ -7,6 +7,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.15] - 2026-10-19
+
+### Added
+
+- `fuzz/fuzz_tools.py`: coverage-guided Atheris fuzzing of `search`,
+  `describe`, `validate`, `generate` and `parse` with every backing family
+  installed; each must answer with a dict and never raise. Runs for two
+  minutes on every change and 30 minutes weekly (`.github/workflows/fuzz.yml`),
+  from the hash-pinned `requirements/fuzz.txt`. OpenSSF Scorecard does not
+  count the Hypothesis tests as fuzzing; it does count Atheris.
+
+### Changed
+
+- The lint and MCP Inspector jobs install the package with
+  `pip install --no-deps -e .`; Scorecard still flagged the non-editable
+  `pip install --no-deps .` as unpinned.
+- `release.yml` titles a new GitHub release `iso20022-mcp <version>`, without
+  the leading `v`.
+- CI lints `fuzz/` with ruff and black.
+
 ## [0.0.14] - 2026-10-19
 
 ### Fixed
