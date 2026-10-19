@@ -41,6 +41,11 @@ Before any feature, fix, or release work, check repository health:
 1. Verify CI is green on `main`.
 2. Ensure linter and formatter pass without warnings or new suppressions.
 3. Every function must remain within the complexity ceilings (Cyclomatic ≤ 10, Cognitive ≤ 15, Halstead ≤ 30, Lines of code ≤ 60 per function, ≤ 500 per file).
+4. **Zero open health findings.** Every open Dependabot pull request and alert, code-scanning alert, secret-scanning alert and issue MUST be fully fixed, merged and closed, not just triaged or left with a PR open:
+   - Fold each Dependabot update into the active `feat/v<next-version>` branch (Single Active Release PR Invariant), together with a fix for every code-scanning alert, and merge that PR once CI is green.
+   - Close each Dependabot PR and issue it supersedes, with a comment naming the merged PR.
+   - A finding that cannot be fixed in code (for example a Scorecard check that needs an external registration or a second reviewer) is reported with the exact action that clears it; it is never left unmentioned.
+   - A dependency with a published advisory is constrained in `pyproject.toml` so that no affected version can resolve, forcing users onto a patched release.
 
 ## 4. Things That Look Like Bugs and Are Not
 
