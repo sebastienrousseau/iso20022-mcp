@@ -7,9 +7,10 @@
   <a href="https://github.com/sebastienrousseau/iso20022-mcp/actions"><img src="https://github.com/sebastienrousseau/iso20022-mcp/workflows/ci/badge.svg?style=for-the-badge&logo=github" alt="Build" /></a>
   <a href="https://pypi.org/project/iso20022-mcp/"><img src="https://img.shields.io/pypi/v/iso20022-mcp.svg?style=for-the-badge&color=fc8d62&logo=pypi" alt="PyPI" /></a>
   <a href="https://glama.ai/mcp/servers/sebastienrousseau/iso20022-mcp"><img src="https://glama.ai/mcp/servers/sebastienrousseau/iso20022-mcp/badges/score.svg?style=for-the-badge" alt="Glama MCP score" /></a>
+  <a href="https://www.bestpractices.dev/projects/15699"><img src="https://www.bestpractices.dev/projects/15699/badge" alt="OpenSSF Best Practices" /></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/iso20022-mcp"><img src="https://img.shields.io/ossf-scorecard/github.com/sebastienrousseau/iso20022-mcp?style=for-the-badge&label=OpenSSF%20Scorecard&logo=openssf" alt="OpenSSF Scorecard" /></a>
   <a href="LICENSE-APACHE"><img src="https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue.svg?style=for-the-badge" alt="License: Apache-2.0 OR MIT" /></a>
-  <a href="https://github.com/sebastienrousseau/iso20022-mcp/blob/main/docs/POLICIES.md"><img src="https://img.shields.io/badge/python-%3E%3D3.10-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.10+" /></a>
+  <a href="https://pypi.org/project/iso20022-mcp/"><img src="https://img.shields.io/badge/python-%3E%3D3.10-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.10+" /></a>
 </p>
 
 <p align="center">

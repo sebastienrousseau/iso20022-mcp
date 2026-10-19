@@ -1,3 +1,4 @@
+<!-- SPDX-FileCopyrightText: 2023-2026 Sebastien Rousseau <sebastian.rousseau@gmail.com> -->
 <!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
 
 # iso20022-mcp Governance
@@ -77,6 +78,22 @@ package used in banking. The mitigations in place:
   and the tools ship with a runnable example.
 - **Quality is enforced by CI,** not by one person's memory.
 - **The goal is >= 2 maintainers** with independent release authority.
+
+### Access continuity
+
+If the lead maintainer becomes unavailable, the project must still be able
+to triage issues, accept changes and publish a release. Two safeguards
+deliver that; their state is recorded here and kept current.
+
+| Safeguard | What it gives a successor | State |
+| :--- | :--- | :--- |
+| GitHub account successor for the repository owner | Admin access to the repository, its issues, settings and release workflow | Not yet designated |
+| A second owner of `iso20022-mcp` on PyPI (or a PyPI organisation with two owners) | The right to manage the project and its trusted publisher | Not yet set up |
+
+Releases need no personal secret: PyPI publishing is bound to
+`release.yml` through OIDC trusted publishing, and signatures are keyless
+(sigstore), so a successor with repository access can release without any
+key handover. Signed tags use the releaser's own SSH key.
 
 ## Code of conduct & security
 
