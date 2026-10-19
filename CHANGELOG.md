@@ -7,6 +7,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.14] - 2026-10-19
+
+### Fixed
+
+- Tool descriptions no longer set rules for sibling tools. "Do not use ...;
+  use 'parse' instead" and "before calling 'validate'" read to a model as
+  instructions about another tool, which passmcp fails as
+  `catalog.text.shadowing`; each description now says what its own tool is
+  not for and names the sibling without an imperative.
+- The `generate` tool definition fits the 500-token per-tool budget
+  (`catalog.budget.tokens`); its description drops the coverage text it
+  repeated.
+
+### Security
+
+- `mcp` is constrained to `>=1.30.0,!=2.0.*,!=2.1.*,<3`, so no release
+  affected by GHSA-84m7-p3x7-pcfv (unbounded StreamableHTTP session
+  accumulation) can resolve; an install on one must move to 1.30.0+ or
+  2.2.0+.
+
+### Changed
+
+- Lock refreshed with every open Dependabot update: `mcp` 2.3.0,
+  `cryptography` 50.0.2, `langchain-core` 1.6.12, `black` 26.10.1, `ruff`
+  0.17.1, `mypy` 2.4.0, `tomli` 2.5.0, the family servers, and `virtualenv`
+  21.14.11 in `requirements/build.txt`. GitHub Actions bumped as a group.
+- CI installs come from the hash-pinned `requirements/ci.txt` and install
+  the package with `--no-deps`, so every `pip install` in a workflow is
+  pinned (OpenSSF Scorecard Pinned-Dependencies).
+- `AGENTS.md`: every open Dependabot PR, alert and issue is fixed, merged
+  and closed, not left open.
+
+### Added
+
+- `tests/test_catalog_text.py`: gates the catalogue against the same
+  shadowing cues and per-tool token budget passmcp applies.
+- `tests/test_fuzz.py`: Hypothesis property tests that every meta-tool
+  answers arbitrary input with a dict and never raises.
+
 ## [0.0.13] - 2026-10-04
 
 ### Changed
