@@ -8,6 +8,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.16] - 2026-10-19
+
+### Added
+
+- `docs/assurance-case.md`: threat model, trust boundaries, design
+  principles and the common weaknesses countered, with evidence.
+- `docs/security-review.md`: the 2026-10-19 review, its method and
+  findings.
+- `SECURITY.md`: how a report is handled (acknowledge within 7 days, fix
+  medium and above within 60), how to verify a release (`gh attestation
+  verify`, `cosign verify-blob`), and what users can and cannot expect.
+- `CONTRIBUTING.md`: coding standards, a mandatory test policy and code
+  review standards.
+- `GOVERNANCE.md`: access continuity, with the state of each safeguard.
+- `REUSE.toml` and a `reuse lint` CI step; OpenSSF Best Practices badge in
+  the README.
+
+### Changed
+
+- Every file carries SPDX copyright and licence lines for
+  `Apache-2.0 OR MIT`. Python files previously carried Apache-2.0 header
+  text only, which did not match the declared dual licence.
+  `DCO.txt` is attributed to the Linux Foundation.
+- `SECURITY.md` lists the supported version (it still said 0.0.11) and
+  points to private vulnerability reporting, now enabled.
+- README: the Python badge linked to a missing `docs/POLICIES.md`.
+
 ## [0.0.15] - 2026-10-19
 
 ### Added
