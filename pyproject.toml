@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 [project]
 name = "iso20022-mcp"
-version = "0.0.16"
+version = "0.0.17"
 description = "Unified Model Context Protocol (MCP) gateway for ISO 20022: one small set of meta-tools (search, describe, validate, generate, parse) routing across the pain, pacs, camt and acmt message families."
 authors = [
     { name = "Sebastien Rousseau", email = "sebastian.rousseau@gmail.com" },

@@ -11,8 +11,8 @@ says what each release changed and anything you need to do.
 
 | Version | Supported |
 | ------- | --------- |
-| 0.0.16 (latest) | :white_check_mark: |
-| < 0.0.16 | :x: |
+| 0.0.17 (latest) | :white_check_mark: |
+| < 0.0.17 | :x: |
 
 ## Reporting a vulnerability
 
