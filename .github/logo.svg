@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-labelledby="t">
+  <!-- SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com> -->
+  <!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
+  <title id="t">iso20022-mcp logo</title>
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="#0b3d5c"/>
+  <g fill="none" stroke="#7fd1c7" stroke-width="6" stroke-linecap="round">
+    <path d="M28 44h22"/><path d="M28 64h22"/><path d="M28 84h22"/>
+    <path d="M50 44c14 0 14 20 28 20"/><path d="M50 84c14 0 14-20 28-20"/>
+  </g>
+  <circle cx="92" cy="64" r="14" fill="#fc8d62"/>
+</svg>
