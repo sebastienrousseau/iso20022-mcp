@@ -12,8 +12,8 @@ authors:
   - family-names: Rousseau
     given-names: Sebastien
     email: sebastian.rousseau@gmail.com
-version: "0.0.12"
-date-released: "2026-10-03"
+version: "0.0.18"
+date-released: "2026-10-20"
 license: "Apache-2.0 OR MIT"
 repository-code: "https://github.com/sebastienrousseau/iso20022-mcp"
 url: "https://iso20022-mcp.com"

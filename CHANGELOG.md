@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.0.18] - 2026-10-20
 
 ### Added
 
@@ -17,9 +17,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   options, so the server builds the SDK's ASGI app and runs it under uvicorn.
   On a loopback bind, DNS-rebinding protection admits `https://` origins as
   well as `http://`. Without the flags nothing changes.
+- `docs/COMPARISON.md`: tool count and catalogue size of the gateway
+  against the four family servers, measured with `list_tools`.
+  `docs/BENCHMARKS.md`: routing and cold-import results from
+  `benches/bench_gateway.py`. `docs/POLICIES.md`: toolchain policy.
+- A complexity gate in CI (`scripts/check_complexity.py` with radon, and
+  `complexipy`): per function, cyclomatic at most 10, cognitive at most 15,
+  Halstead difficulty at most 30, at most 60 lines; at most 500 lines per
+  file. The baseline of accepted offenders is empty.
+- `scripts/verify_versions.py` checks `CITATION.cff` as well.
+
+### Changed
+
+- `benches/bench_gateway.py` splits `render` (cyclomatic 12, cognitive 16)
+  into helpers, with byte-identical output, and `scripts/verify_versions.py`
+  splits `main` (cyclomatic 17), so every function is within the limits.
+- The README follows `README-TEMPLATE.md` in full: logo, centred title,
+  pitch, the template's section order, and the sections it requires
+  (requirements, capabilities, comparison, benchmarks, when not to use,
+  security, documentation, stability guarantees). Existing content moved
+  into those sections; the suite table uses the template's three columns,
+  with each server's tool count folded into its purpose.
 
 ### Fixed
 
+- `CITATION.cff` still named 0.0.12; nothing checked it.
 - README badge row follows `README-TEMPLATE.md`: every badge is 28 px high
   in the same style, in the template's order (build, registry, docs,
   scorecard, licence, Python floor), followed by Best Practices and Glama.
