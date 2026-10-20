@@ -76,3 +76,11 @@ jobs:
 
       - name: Mypy
         run: mypy iso20022_mcp/
+
+      # Per function: cyclomatic <= 10, cognitive <= 15, Halstead
+      # difficulty <= 30, <= 60 lines; <= 500 lines per file. The baseline
+      # of accepted offenders is empty.
+      - name: Complexity
+        run: |
+          python scripts/check_complexity.py
+          complexipy iso20022_mcp scripts benches fuzz examples --max-complexity-allowed 15 --quiet

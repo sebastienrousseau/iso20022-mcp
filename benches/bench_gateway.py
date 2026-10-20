@@ -171,12 +171,17 @@ def run(quick: bool) -> dict:
 
 
 def render(results: dict) -> None:
+    _render_routing(results["routing"])
+    _render_cold(results["cold"])
+
+
+def _render_routing(rows: list[dict]) -> None:
     print("routing — the bookkeeping every call pays")
     print(f"{'call':>24}{'us':>10}{'calls/sec':>14}")
-    for row in results["routing"]:
+    for row in rows:
         rate = 1e6 / row["us"] if row["us"] else 0.0
         print(f"{row['call']:>24}{row['us']:>10.2f}{rate:>14,.0f}")
-    worst = max(r["us"] for r in results["routing"])
+    worst = max(r["us"] for r in rows)
     print(
         f"\n  Dearest routing step is {worst:,.1f} us. Anything in this range "
         f"is negligible beside the family server's own work, which is what\n"
@@ -184,38 +189,40 @@ def render(results: dict) -> None:
         f"cost for the indirection."
     )
 
+
+def _cold_line(row: dict) -> str:
+    if "error" in row:
+        return f"{row['message_type']:>20}  failed: {row['error'][:40]}"
+    ratio = row["cold_ms"] * 1e3 / row["warm_us"] if row["warm_us"] else 0.0
+    note = "" if not row["resolve_error"] else f"  ({row['resolve_error']})"
+    return (
+        f"{row['message_type']:>20}{str(row['func']):>18}"
+        f"{row['cold_ms']:>11.1f}{row['warm_us']:>11.2f}"
+        f"{ratio:>10,.0f}x{note}"
+    )
+
+
+def _render_cold(rows: list[dict]) -> None:
     print("\nfirst call into a family, in a fresh interpreter")
     print(
         f"{'message type':>20}{'resolved':>18}{'cold ms':>11}"
         f"{'warm us':>11}{'ratio':>10}"
     )
-    for row in results["cold"]:
-        if "error" in row:
-            print(f"{row['message_type']:>20}  failed: {row['error'][:40]}")
-            continue
-        ratio = (
-            row["cold_ms"] * 1e3 / row["warm_us"] if row["warm_us"] else 0.0
-        )
-        note = (
-            "" if not row["resolve_error"] else f"  ({row['resolve_error']})"
-        )
-        print(
-            f"{row['message_type']:>20}{str(row['func']):>18}"
-            f"{row['cold_ms']:>11.1f}{row['warm_us']:>11.2f}"
-            f"{ratio:>10,.0f}x{note}"
-        )
-    usable = [r for r in results["cold"] if "cold_ms" in r]
-    if usable:
-        total = sum(r["cold_ms"] for r in usable)
-        print(
-            f"\n  Loading every family measured here costs about "
-            f"{total:,.0f} ms, paid once per process.\n"
-            f"  A worker that handles one message and exits pays the import "
-            f"for whichever family it touches; a long-lived server pays each\n"
-            f"  once. If that first-request latency matters to you, preload "
-            f"the families you expect rather than discovering them one\n"
-            f"  request at a time."
-        )
+    for row in rows:
+        print(_cold_line(row))
+    usable = [r for r in rows if "cold_ms" in r]
+    if not usable:
+        return
+    total = sum(r["cold_ms"] for r in usable)
+    print(
+        f"\n  Loading every family measured here costs about "
+        f"{total:,.0f} ms, paid once per process.\n"
+        f"  A worker that handles one message and exits pays the import "
+        f"for whichever family it touches; a long-lived server pays each\n"
+        f"  once. If that first-request latency matters to you, preload "
+        f"the families you expect rather than discovering them one\n"
+        f"  request at a time."
+    )
 
 
 def main() -> int:
