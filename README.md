@@ -381,6 +381,10 @@ This project is dual-licensed under either:
 
 at your option. Dependencies keep their own licences.
 
+The logo is "Computer connected" by glyph.faisalovers from
+[Noun Project](https://thenounproject.com/icon/1607704/), licensed under
+[CC BY 3.0](LICENSES/CC-BY-3.0.txt) and recoloured for light and dark themes.
+
 ---
 
 `mcp-name: io.github.sebastienrousseau/iso20022-mcp`

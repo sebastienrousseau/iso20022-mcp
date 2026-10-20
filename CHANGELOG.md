@@ -38,6 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   security, documentation, stability guarantees). Existing content moved
   into those sections; the suite table uses the template's three columns,
   with each server's tool count folded into its purpose.
+- The logo is "Computer connected" by glyph.faisalovers from Noun
+  Project (CC BY 3.0), credited in the README and `LICENSES/CC-BY-3.0.txt`.
 
 ### Fixed
 
