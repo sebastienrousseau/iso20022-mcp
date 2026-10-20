@@ -1,14 +1,15 @@
 # SPDX-FileCopyrightText: 2023-2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
 # SPDX-License-Identifier: Apache-2.0 OR MIT
-[tool.poetry]
+[project]
 name = "iso20022-mcp"
 version = "0.0.16"
 description = "Unified Model Context Protocol (MCP) gateway for ISO 20022: one small set of meta-tools (search, describe, validate, generate, parse) routing across the pain, pacs, camt and acmt message families."
-authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
+authors = [
+    { name = "Sebastien Rousseau", email = "sebastian.rousseau@gmail.com" },
+]
 license = "Apache-2.0 OR MIT"
 readme = "README.md"
-repository = "https://github.com/sebastienrousseau/iso20022-mcp"
-homepage = "https://iso20022-mcp.com"
+requires-python = ">=3.10,<4.0"
 keywords = [
     "iso-20022",
     "mcp",
@@ -19,12 +20,39 @@ keywords = [
     "acmt001",
     "fintech",
 ]
+# Runtime dependencies stay in [tool.poetry.dependencies] below: the
+# vendored tests/test_suite_conformance.py reads them from there for
+# poetry-core builds, and its checksum forbids adapting it here.
+dynamic = ["classifiers", "dependencies"]
+
+# Install only the families you need, or `pip install iso20022-mcp[all]`.
+# Each spec here must equal the one in [tool.poetry.dependencies];
+# tests/test_extras_resolve.py fails if they drift apart.
+[project.optional-dependencies]
+pain = ["pain001-mcp>=0.0.62"]
+pacs = ["pacs008-mcp>=0.0.9"]
+camt = ["camt053-mcp>=0.0.17"]
+acmt = ["acmt001-mcp>=0.0.8"]
+all = [
+    "pain001-mcp>=0.0.62",
+    "pacs008-mcp>=0.0.9",
+    "camt053-mcp>=0.0.17",
+    "acmt001-mcp>=0.0.8",
+]
+# Framework adapters -- one extra per supported agent framework.
+langchain = ["langchain-core>=0.2"]
+
+[project.urls]
+homepage = "https://iso20022-mcp.com"
+repository = "https://github.com/sebastienrousseau/iso20022-mcp"
+
+[project.scripts]
+iso20022-mcp = "iso20022_mcp.server:main"
+
+[tool.poetry]
 packages = [
     { include = "iso20022_mcp" },
 ]
-
-[tool.poetry.scripts]
-iso20022-mcp = "iso20022_mcp.server:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
@@ -57,14 +85,6 @@ langchain-core = { version = ">=0.2", optional = true }
 # here so the patched line is the only resolvable one; the pins in
 # requirements/ already sit at 50.0.0.
 cryptography = ">=50.0.0"
-[tool.poetry.extras]
-pain = ["pain001-mcp"]
-pacs = ["pacs008-mcp"]
-camt = ["camt053-mcp"]
-acmt = ["acmt001-mcp"]
-all = ["pain001-mcp", "pacs008-mcp", "camt053-mcp", "acmt001-mcp"]
-# Framework adapters -- one extra per supported agent framework.
-langchain = ["langchain-core"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=9.0.3,<10.0.0"

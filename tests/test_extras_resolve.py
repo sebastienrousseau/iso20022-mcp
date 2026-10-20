@@ -47,9 +47,23 @@ XMLSCHEMA_4_FLOORS = {
 }
 
 
-def _poetry() -> dict[str, Any]:
+def _pyproject() -> dict[str, Any]:
     with PYPROJECT.open("rb") as handle:
-        return dict(tomllib.load(handle)["tool"]["poetry"])
+        return dict(tomllib.load(handle))
+
+
+def _poetry() -> dict[str, Any]:
+    return dict(_pyproject()["tool"]["poetry"])
+
+
+def _extras() -> dict[str, list[str]]:
+    return dict(_pyproject()["project"]["optional-dependencies"])
+
+
+def _extra_names(extra: str) -> set[str]:
+    from packaging.requirements import Requirement
+
+    return {Requirement(raw).name for raw in _extras()[extra]}
 
 
 def _dependencies() -> dict[str, Any]:
@@ -116,16 +130,36 @@ def test_every_server_in_the_all_extra_is_a_declared_dependency() -> None:
 
     Cheap to assert, and it fails here rather than in a release job.
     """
-    poetry = _poetry()
-    declared = set(poetry["dependencies"])
-    for name in poetry["extras"]["all"]:
+    declared = set(_dependencies())
+    for name in _extra_names("all"):
         assert name in declared, f"[all] names {name}, which is not declared"
+
+
+def test_every_extra_repeats_the_declared_constraint() -> None:
+    """The extras restate each spec from `[tool.poetry.dependencies]`.
+
+    The two copies exist because the vendored conformance test reads the
+    poetry table. If they drift, the published metadata stops matching what
+    that test and `test_the_family_servers_all_require_xmlschema_4` check.
+    """
+    from packaging.requirements import Requirement
+    from packaging.specifiers import SpecifierSet
+
+    drifted: list[str] = []
+    for extra, entries in _extras().items():
+        for raw in entries:
+            requirement = Requirement(raw)
+            declared = SpecifierSet(_spec(requirement.name))
+            if requirement.specifier != declared:
+                drifted.append(f"[{extra}] {raw} vs {declared}")
+    assert not drifted, "extras disagree with the dependencies: " + (
+        "; ".join(drifted)
+    )
 
 
 def test_the_all_extra_covers_every_family_server() -> None:
     """`[all]` must mean all of them, or the name is a lie."""
-    poetry = _poetry()
-    listed = set(poetry["extras"]["all"])
+    listed = _extra_names("all")
     assert (
         set(XMLSCHEMA_4_FLOORS) <= listed
     ), f"[all] is missing {set(XMLSCHEMA_4_FLOORS) - listed}"
@@ -137,7 +171,7 @@ def test_dunder_version_matches_pyproject() -> None:
     Nothing failed: the number is only ever read by a client asking the
     server what it is talking to, and it answered wrongly for a whole release.
     """
-    declared = str(_poetry()["version"])
+    declared = str(_pyproject()["project"]["version"])
     assert iso20022_mcp.__version__ == declared, (
         f"iso20022_mcp.__version__ is {iso20022_mcp.__version__!r} but "
         f"pyproject.toml says {declared!r}"
