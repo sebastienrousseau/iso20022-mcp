@@ -46,6 +46,7 @@ def test_flags_and_defaults() -> None:
         "127.0.0.1",
         8000,
     )
+    assert (args.ssl_certfile, args.ssl_keyfile) == (None, None)
     args = parser.parse_args(
         ["--transport", "sse", "--host", "0.0.0.0", "--port", "9"]
     )
@@ -120,10 +121,19 @@ def test_run_accepts_the_port_range_edges(port: int) -> None:
 def test_serve_wires_the_flags_to_run(monkeypatch: pytest.MonkeyPatch) -> None:
     seen: list[tuple[Any, ...]] = []
     monkeypatch.setattr(
-        _cli, "run", lambda s, t, h, p: seen.append((s, t, h, p))
+        _cli, "run", lambda s, t, h, p, **k: seen.append((s, t, h, p, k))
     )
     _cli.serve("srv", ["--transport", "sse", "--port", "8002"], "x", "1")
-    assert seen == [("srv", "sse", "127.0.0.1", 8002)]
+    _cli.serve(
+        "srv",
+        ["--transport", "sse", "--ssl-certfile", "c", "--ssl-keyfile", "k"],
+        "x",
+        "1",
+    )
+    assert seen == [
+        ("srv", "sse", "127.0.0.1", 8002, {"certfile": None, "keyfile": None}),
+        ("srv", "sse", "127.0.0.1", 8000, {"certfile": "c", "keyfile": "k"}),
+    ]
 
 
 def test_version_flag(capsys: pytest.CaptureFixture[str]) -> None:
@@ -140,3 +150,117 @@ def test_main_defaults_to_stdio(monkeypatch: pytest.MonkeyPatch) -> None:
     )
     server.main([])
     assert calls == [((), {})]
+
+
+class _ModernApps(_Modern):
+    """mcp 2.x app builders: keyword arguments, no settings.host."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.settings = argparse.Namespace(log_level="WARNING")
+
+    def streamable_http_app(self, **kwargs: Any) -> tuple[str, dict[str, Any]]:
+        return ("streamable-http", kwargs)
+
+    def sse_app(self, **kwargs: Any) -> tuple[str, dict[str, Any]]:
+        return ("sse", kwargs)
+
+
+class _LegacyApps(_Legacy):
+    """mcp 1.x app builders: no arguments, everything on settings."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.settings.transport_security = "sdk default"
+        self.settings.log_level = "INFO"
+
+    def streamable_http_app(self) -> str:
+        return "streamable-http app"
+
+    def sse_app(self) -> str:
+        return "sse app"
+
+
+@pytest.fixture
+def uvicorn_calls(monkeypatch: pytest.MonkeyPatch) -> list[Any]:
+    import uvicorn
+
+    calls: list[Any] = []
+    monkeypatch.setattr(
+        uvicorn, "run", lambda app, **kwargs: calls.append((app, kwargs))
+    )
+    return calls
+
+
+def test_tls_needs_both_files_and_an_http_transport() -> None:
+    for cert, key in (("c", None), (None, "k")):
+        with pytest.raises(ValueError, match="both a certificate"):
+            _transports.run(_Modern(), "sse", certfile=cert, keyfile=key)
+    with pytest.raises(ValueError, match="not stdio"):
+        _transports.run(_Modern(), "stdio", certfile="c", keyfile="k")
+
+
+def test_tls_serves_the_modern_app_under_uvicorn(
+    uvicorn_calls: list[Any],
+) -> None:
+    srv = _ModernApps()
+    _transports.run(
+        srv, "streamable-http", "127.0.0.1", 8443, certfile="c", keyfile="k"
+    )
+    ((app, kwargs),) = uvicorn_calls
+    assert srv.calls == []
+    assert kwargs == {
+        "host": "127.0.0.1",
+        "port": 8443,
+        "ssl_certfile": "c",
+        "ssl_keyfile": "k",
+        "log_level": "warning",
+    }
+    name, built = app
+    assert name == "streamable-http"
+    assert built["streamable_http_path"] == "/mcp"
+    security = built["transport_security"]
+    assert security.enable_dns_rebinding_protection
+    assert "https://127.0.0.1:*" in security.allowed_origins
+    assert "http://localhost:*" in security.allowed_origins
+
+
+def test_tls_sse_on_a_routable_host_has_no_loopback_guard(
+    uvicorn_calls: list[Any],
+) -> None:
+    _transports.run(
+        _ModernApps(), "sse", "0.0.0.0", 8443, certfile="c", keyfile="k"
+    )
+    ((app, _),) = uvicorn_calls
+    assert app == (
+        "sse",
+        {
+            "sse_path": "/sse",
+            "message_path": "/messages/",
+            "host": "0.0.0.0",
+            "transport_security": None,
+        },
+    )
+
+
+@pytest.mark.parametrize("transport", ["streamable-http", "sse"])
+def test_tls_configures_the_legacy_app_through_settings(
+    transport: str, uvicorn_calls: list[Any]
+) -> None:
+    srv = _LegacyApps()
+    _transports.run(srv, transport, "::1", 8443, certfile="c", keyfile="k")
+    ((app, kwargs),) = uvicorn_calls
+    assert app == f"{transport} app"
+    assert (srv.settings.host, srv.settings.port) == ("::1", 8443)
+    assert "https://[::1]:*" in srv.settings.transport_security.allowed_origins
+    assert kwargs["log_level"] == "info"
+    assert srv.calls == []
+
+
+def test_tls_without_settings_defaults_the_log_level(
+    uvicorn_calls: list[Any],
+) -> None:
+    srv = _ModernApps()
+    del srv.settings
+    _transports.run(srv, "sse", certfile="c", keyfile="k")
+    assert uvicorn_calls[0][1]["log_level"] == "info"

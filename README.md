@@ -111,9 +111,10 @@ One command line, three transports:
 | `iso20022-mcp --transport sse` | HTTP+SSE (2024-11-05) | `http://127.0.0.1:8000/sse` and `/messages/` | for clients that still expect the older transport |
 
 `--host` and `--port` change the bind address (defaults `127.0.0.1` and
-`8000`). The HTTP transports carry no authentication of their own: bind
-loopback, or put the server behind a gateway you trust before binding a
-routable address. Every release is verified over streamable HTTP with
+`8000`). `--ssl-certfile cert.pem --ssl-keyfile key.pem` serves either HTTP
+transport over HTTPS instead, on mcp 1.x and 2.x alike. The HTTP transports
+carry no authentication of their own: bind loopback, or put the server
+behind a gateway you trust before binding a routable address. Every release is verified over streamable HTTP with
 [passmcp](https://github.com/sebastienrousseau/passmcp) in both protocol
 eras and over SSE with the MCP SDK client; see
 [ADR 0001](docs/adr/0001-three-transports-one-command-line.md).

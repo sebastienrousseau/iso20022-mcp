@@ -4,7 +4,8 @@
 """The command line every server in the suite shares.
 
 ``serve`` is the body of each ``main()``: it parses ``--transport``,
-``--host``, ``--port`` and ``--version`` and hands the result to
+``--host``, ``--port``, ``--ssl-certfile``, ``--ssl-keyfile`` and
+``--version`` and hands the result to
 :func:`_transports.run`. Flag names, defaults and help text live here and
 nowhere else, so the suite is started and documented the same way.
 
@@ -26,7 +27,7 @@ from iso20022_mcp._transports import (
 
 
 def add_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add ``--transport``, ``--host`` and ``--port`` to ``parser``."""
+    """Add the transport, bind and TLS flags to ``parser``."""
     group = parser.add_argument_group("transport")
     group.add_argument(
         "--transport",
@@ -50,6 +51,16 @@ def add_arguments(parser: argparse.ArgumentParser) -> None:
         default=DEFAULT_PORT,
         help="port to bind for the HTTP transports (default: 8000)",
     )
+    group.add_argument(
+        "--ssl-certfile",
+        metavar="PATH",
+        help="PEM certificate: serve the HTTP transports over HTTPS",
+    )
+    group.add_argument(
+        "--ssl-keyfile",
+        metavar="PATH",
+        help="PEM private key for --ssl-certfile",
+    )
 
 
 def serve(
@@ -65,4 +76,11 @@ def serve(
     )
     add_arguments(parser)
     args = parser.parse_args(argv)
-    run(server, args.transport, args.host, args.port)
+    run(
+        server,
+        args.transport,
+        args.host,
+        args.port,
+        certfile=args.ssl_certfile,
+        keyfile=args.ssl_keyfile,
+    )

@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `--ssl-certfile` and `--ssl-keyfile` serve the streamable HTTP and SSE
+  transports over HTTPS, on mcp 1.x and 2.x. The SDK's `run()` takes no TLS
+  options, so the server builds the SDK's ASGI app and runs it under uvicorn.
+  On a loopback bind, DNS-rebinding protection admits `https://` origins as
+  well as `http://`. Without the flags nothing changes.
+
 ### Fixed
 
 - README badge row follows `README-TEMPLATE.md`: every badge is 28 px high
