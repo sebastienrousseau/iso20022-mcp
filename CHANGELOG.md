@@ -8,6 +8,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- README badge row follows `README-TEMPLATE.md`: every badge is 28 px high
+  in the same style, in the template's order (build, registry, docs,
+  scorecard, licence, Python floor), followed by Best Practices and Glama.
+  The build badge used a legacy URL that returned 404. The Best Practices
+  badge now uses the matching shields.io style, and the Python badge links
+  to the new `docs/POLICIES.md`.
+
 ## [0.0.17] - 2026-10-20
 
 ### Changed
