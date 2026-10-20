@@ -19,6 +19,26 @@ python benches/bench_gateway.py --quick    # the benchmark still runs
 
 `pytest` fails below **100% branch coverage**.
 
+## Small tasks for newcomers
+
+The repository keeps zero open issues, so small tasks are listed here rather
+than left open. Each is self-contained and has a clear acceptance check.
+Past ones carry the
+[`good first issue`](https://github.com/sebastienrousseau/iso20022-mcp/issues?q=label%3A%22good+first+issue%22)
+label; reopen the linked issue, or open a pull request that names it.
+
+- **Fuzz the resource template and the prompt**
+  ([#74](https://github.com/sebastienrousseau/iso20022-mcp/issues/74)).
+  Add `describe_resource` and `route_iso20022_task` to `tests/test_fuzz.py`
+  and `fuzz/fuzz_tools.py`. Each must return a string and never raise.
+  Done when both are covered and coverage stays at 100%.
+- **A release verification script**
+  ([#75](https://github.com/sebastienrousseau/iso20022-mcp/issues/75)).
+  Add `scripts/verify_release.sh <version>`, which downloads a release's
+  distributions, `.sig` and `.pem` files and runs both checks in
+  [`SECURITY.md`](SECURITY.md#verifying-a-release). Done when it passes
+  against a published release and exits non-zero when a check fails.
+
 ## Coding standards
 
 - **Style:** [PEP 8](https://peps.python.org/pep-0008/), formatted by

@@ -8,6 +8,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Package metadata, the console script and the extras move from
+  `[tool.poetry]` to the PEP 621 `[project]` table, so `poetry check`
+  reports no deprecations (#73). Runtime dependencies stay in
+  `[tool.poetry.dependencies]`, which the vendored conformance test reads;
+  `tests/test_extras_resolve.py` fails if an extra drifts from them. The
+  wheel now declares `License-Expression: Apache-2.0 OR MIT` and no longer
+  carries the `License :: Other/Proprietary License` classifier.
+- `CONTRIBUTING.md` lists the small tasks for newcomers.
+
 ## [0.0.16] - 2026-10-19
 
 ### Added
