@@ -51,6 +51,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   badge now uses the matching shields.io style, and the Python badge links
   to the new `docs/POLICIES.md`.
 
+### Security
+
+- The release toolchain (`requirements/build.txt`) floors `filelock` at
+  4.2.1 (GHSA-9vhv-jxww-xfm5, GHSA-567q-5qvw-pf92, GHSA-v4x8-3wr5-3wq8)
+  and `certifi` at 2026.10.19 (PYSEC-2026-4320); it pinned filelock
+  4.0.10 and certifi 2026.7.22. filelock 4.2.1 needs Python 3.11, so the
+  file is compiled for 3.12, the Python of the publish and SBOM jobs.
+
 ## [0.0.17] - 2026-10-20
 
 ### Changed
