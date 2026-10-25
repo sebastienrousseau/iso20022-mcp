@@ -79,6 +79,14 @@ def _spec(name: str) -> str:
     return ",".join(str(spec).split())
 
 
+def _lower_bound(specifier: Any) -> Any:
+    """The highest ``>=`` bound in ``specifier``, or 0 if it has none."""
+    from packaging.version import Version
+
+    bounds = [Version(s.version) for s in specifier if s.operator == ">="]
+    return max(bounds, default=Version("0"))
+
+
 def test_the_family_servers_all_require_xmlschema_4() -> None:
     """Every server in `[all]` must sit at or above its xmlschema-4 floor.
 
@@ -93,8 +101,8 @@ def test_the_family_servers_all_require_xmlschema_4() -> None:
         requirement = Requirement(f"{name}{_spec(name)}")
         if requirement.specifier.contains(Version("0.0.1")):
             behind.append(f"{name} has no floor at all")
-        elif not requirement.specifier.contains(Version(floor)):
-            behind.append(f"{name}{_spec(name)} excludes {floor}")
+        elif _lower_bound(requirement.specifier) < Version(floor):
+            behind.append(f"{name}{_spec(name)} admits releases below {floor}")
 
     assert not behind, (
         "these constraints cannot resolve together, so "
@@ -113,9 +121,13 @@ def test_no_family_server_is_capped_below_its_xmlschema_4_release() -> None:
 
     for name, floor in XMLSCHEMA_4_FLOORS.items():
         specifier = Requirement(f"{name}{_spec(name)}").specifier
-        assert specifier.contains(Version(floor)), (
-            f"{name}{_spec(name)} excludes {floor}, the release that moved "
-            f"to xmlschema 4 — `iso20022-mcp[all]` cannot resolve"
+        # The floor may rise past the xmlschema-4 release (the suite releases
+        # in lockstep); what must hold is that the floor itself resolves.
+        lower = _lower_bound(specifier)
+        assert lower >= Version(floor) and specifier.contains(lower), (
+            f"{name}{_spec(name)} excludes its own floor or sits below {floor}, "
+            f"the release that moved to xmlschema 4 — `iso20022-mcp[all]` "
+            f"cannot resolve"
         )
         # And nothing newer is excluded either: a cap added later would
         # reintroduce exactly the 0.0.6 failure.

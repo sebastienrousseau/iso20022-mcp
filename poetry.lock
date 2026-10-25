@@ -2,26 +2,26 @@
 
 [[package]]
 name = "acmt001"
-version = "0.0.9"
+version = "0.0.13"
 description = "Acmt001 is a Python Library for Automating ISO 20022 acmt Account Management (account opening, maintenance, and closing) XML Messages."
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 markers = "extra == \"acmt\" or extra == \"all\""
 files = [
-    {file = "acmt001-0.0.9-py3-none-any.whl", hash = "sha256:73f80a8aecd01822fa39a8568b5e9e367dfb32628a26dbb1c2094c2829e84d28"},
-    {file = "acmt001-0.0.9.tar.gz", hash = "sha256:87e43768d30629df74881150343aadcfbfb737580a1394efd5346cff63fcb702"},
+    {file = "acmt001-0.0.13-py3-none-any.whl", hash = "sha256:d0939c7869527ba704f88639914d62042c75a29f887bd56409dcb4b5e4337cda"},
+    {file = "acmt001-0.0.13.tar.gz", hash = "sha256:cba96b043b729f631bcbc39f30ab32cc594e1e95581d7b5118ce0a7b32ed0716"},
 ]
 
 [package.dependencies]
 click = ">=8.1,<9"
 colorama = "0.4.6"
-cryptography = ">=48.0.1,<51.0.0"
+cryptography = ">=50.0.0,<51.0.0"
 defusedxml = "0.7.1"
 fastapi = ">=0.95"
 httpx = ">=0.23"
 jinja2 = "3.1.6"
-jsonschema = ">=4.20,<4.25"
+jsonschema = ">=4.20,<4.27"
 markupsafe = ">=2.1.5,<4"
 pyarrow = ">=23.0.1,<26.0.0"
 pygments = ">=2.20.0,<3.0.0"
@@ -31,21 +31,27 @@ xmlschema = ">=4.3.2,<5.0.0"
 
 [[package]]
 name = "acmt001-mcp"
-version = "0.0.11"
+version = "0.0.13"
 description = "Model Context Protocol (MCP) server exposing the acmt001 ISO 20022 Account Management library as agent tools."
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 markers = "extra == \"acmt\" or extra == \"all\""
 files = [
-    {file = "acmt001_mcp-0.0.11-py3-none-any.whl", hash = "sha256:552156dfd485ceca59d7589f1d563e2b29394a274fa03bd8f6d265ae607b7640"},
-    {file = "acmt001_mcp-0.0.11.tar.gz", hash = "sha256:d1b1e13c3219b9b11e161142f217292cdd50863a36085be738c138adb9b6cb42"},
+    {file = "acmt001_mcp-0.0.13-py3-none-any.whl", hash = "sha256:5f916c17c69313cf08d3ff6431fd2cecb93c172b11f52e3c113ac039b6d6f512"},
+    {file = "acmt001_mcp-0.0.13.tar.gz", hash = "sha256:ce18f5b08f7ff0d6157d88a61fc6cf25018065483f0e7d1d11301e64468261ac"},
 ]
 
 [package.dependencies]
-acmt001 = ">=0.0.5"
+acmt001 = ">=0.0.13,<1"
+anyio = ">=4.14.2,<5"
+certifi = ">=2026.10.19"
 cryptography = ">=50.0.0"
-mcp = ">=1.2,<3"
+httpcore2 = {version = ">=2.10.0", markers = "sys_platform != \"emscripten\""}
+httpx2 = ">=2.12.0"
+mcp = ">=1.30.0,<2.0 || >=2.2.dev0,<3"
+opentelemetry-api = ">=1.45.1"
+pyjwt = {version = ">=2.15.0", extras = ["crypto"]}
 
 [package.extras]
 online = ["httpx (>=0.27,<1)"]
@@ -267,93 +273,101 @@ uvloop = ["uvloop (>=0.15.2) ; sys_platform != \"win32\"", "winloop (>=0.5.0) ; 
 
 [[package]]
 name = "camt053"
-version = "0.0.20"
+version = "0.0.23"
 description = "Camt053 is a Python library for reading ISO 20022 camt Bank-to-Customer Statements (camt.053/052/054) and generating validated reversing entries by return reason code (e.g. AC04 Closed Account)."
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 markers = "extra == \"camt\" or extra == \"all\""
 files = [
-    {file = "camt053-0.0.20-py3-none-any.whl", hash = "sha256:22e89754463d00373a50efd24123e77ccc34ff1ebd9e9608902ee133f66ca9ec"},
-    {file = "camt053-0.0.20.tar.gz", hash = "sha256:1f3bf89f3b69184d78d331a354b9537a38f2237a4daa52c520fa6ab57f16dc78"},
+    {file = "camt053-0.0.23-py3-none-any.whl", hash = "sha256:390edeaba1c7915d1b7237c38ef47a3f1a540e714f1260cce6f9422491fd7f78"},
+    {file = "camt053-0.0.23.tar.gz", hash = "sha256:4f37f08cfb0d3febe5eedb92660a7ebe2087fd4c8baf5fa9808c4ad4f8cefc90"},
 ]
 
 [package.dependencies]
+anyio = ">=4.14.2,<5"
+certifi = ">=2026.10.19"
 click = ">=8.1,<9"
 colorama = "0.4.6"
-cryptography = ">=48.0.1,<51.0.0"
+cryptography = ">=50.0.0,<51.0.0"
 defusedxml = "0.7.1"
-fastapi = ">=0.95"
-httpx = ">=0.23"
+fastapi = ">=0.109.1,<1"
+h11 = ">=0.16.0,<1"
+httpx = ">=0.23,<1"
+idna = ">=3.15,<4"
 jinja2 = "3.1.6"
 jsonschema = ">=4.20,<4.27"
 markupsafe = ">=2.1,<4"
+pydantic = ">=2.4.0,<3"
 pygments = ">=2.20.0,<3.0.0"
+python-dotenv = ">=1.2.2,<2"
+pyyaml = ">=5.4,<7"
 rich = ">=13.7.1,<16"
-uvicorn = {version = ">=0.20", extras = ["standard"]}
+starlette = ">=1.3.1,<2"
+uvicorn = {version = ">=0.20,<1", extras = ["standard"]}
 xmlschema = ">=4.3.2,<5.0.0"
 
 [package.extras]
-fast = ["lxml (>=5.0,<7)"]
-telemetry = ["opentelemetry-api (>=1.20)"]
+fast = ["lxml (>=6.1.0,<7)"]
+telemetry = ["opentelemetry-api (>=1.20,<2)"]
 
 [[package]]
 name = "camt053-loader-mt940"
-version = "0.0.20"
+version = "0.0.23"
 description = "Convert legacy SWIFT MT940 bank statements to camt.053 ParsedDocument."
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"camt\" or extra == \"all\""
 files = [
-    {file = "camt053_loader_mt940-0.0.20-py3-none-any.whl", hash = "sha256:fb3334242e2d5411b262804fd08105a51c2249c6df60656bea06c52ac6c735a8"},
-    {file = "camt053_loader_mt940-0.0.20.tar.gz", hash = "sha256:843e44968c68f6569124549e229bc6af6ae57ff435e9fdf363f4cfe8ca71fb77"},
+    {file = "camt053_loader_mt940-0.0.23-py3-none-any.whl", hash = "sha256:983aea6e595c591f69846d9649aac9b793554bde059c3384dfdf5441f80efa73"},
+    {file = "camt053_loader_mt940-0.0.23.tar.gz", hash = "sha256:235b05b938832f3f70e9bd14e6919786f59c4e2e50fe25b36096b2d69df38718"},
 ]
 
 [package.dependencies]
-camt053 = ">=0.0.16,<1"
+camt053 = ">=0.0.23,<1"
 
 [package.extras]
-dev = ["interrogate (>=1.7)", "mypy (>=1.11)", "packaging (>=23)", "pytest (>=8)", "pytest-cov (>=5)", "ruff (>=0.6)", "tomli (>=2) ; python_version < \"3.11\""]
+dev = ["complexipy (>=8.1)", "hypothesis (>=6.100)", "interrogate (>=1.7)", "mypy (>=1.11)", "packaging (>=23)", "pytest (>=8)", "pytest-cov (>=5)", "radon (>=6.0.1)", "ruff (>=0.6)", "tomli (>=2) ; python_version < \"3.11\""]
 
 [[package]]
 name = "camt053-loader-mt942"
-version = "0.0.20"
+version = "0.0.23"
 description = "Convert legacy SWIFT MT942 interim transaction reports to camt.052 ParsedDocument."
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"camt\" or extra == \"all\""
 files = [
-    {file = "camt053_loader_mt942-0.0.20-py3-none-any.whl", hash = "sha256:cb4d40ad73c3846927fd1775baaff86f8cf841ac62f008607daf401fb7bda44c"},
-    {file = "camt053_loader_mt942-0.0.20.tar.gz", hash = "sha256:ffe52ad588559dff833e33207d071cca91f3b133a18060c74b7a816dbe255ff1"},
+    {file = "camt053_loader_mt942-0.0.23-py3-none-any.whl", hash = "sha256:9a9414394ba88dbf6d9e05be91fc6b6145fac1b738ca1fd670bfa35288ba1a58"},
+    {file = "camt053_loader_mt942-0.0.23.tar.gz", hash = "sha256:5c522189b4a5b91c6caacc5d1641b5faa5edab0d6024d701be61775f24e23998"},
 ]
 
 [package.dependencies]
-camt053 = ">=0.0.16,<1"
+camt053 = ">=0.0.23,<1"
 
 [package.extras]
-dev = ["interrogate (>=1.7)", "mypy (>=1.11)", "pytest (>=8)", "pytest-cov (>=5)", "ruff (>=0.6)"]
+dev = ["complexipy (>=8.1)", "hypothesis (>=6.100)", "interrogate (>=1.7)", "mypy (>=1.11,<3)", "packaging (>=23.0)", "pytest (>=9.0.3,<10)", "pytest-cov (>=6.0.0,<8)", "radon (>=6.0)", "reuse (>=5.0)", "ruff (>=0.17,<0.18)", "tomli (>=2.0) ; python_version < \"3.11\""]
 
 [[package]]
 name = "camt053-mcp"
-version = "0.0.22"
+version = "0.0.23"
 description = "Model Context Protocol (MCP) server exposing the camt053 ISO 20022 Bank Statement library as agent tools."
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 markers = "extra == \"camt\" or extra == \"all\""
 files = [
-    {file = "camt053_mcp-0.0.22-py3-none-any.whl", hash = "sha256:b2ccf7621f4dbaab6c6fc0bda4d596ab3c040f11dbb010b740e31a14f258e86e"},
-    {file = "camt053_mcp-0.0.22.tar.gz", hash = "sha256:4228990263a33f355cc05dd4587c98b86af28568b44021743de543069fd157dc"},
+    {file = "camt053_mcp-0.0.23-py3-none-any.whl", hash = "sha256:bfb67d133b263fda115c2cdf9cd38005b9e3e9e01edb128a8ea81faf5f1668a7"},
+    {file = "camt053_mcp-0.0.23.tar.gz", hash = "sha256:7cc6eb73a699c1f9481d04c8ff1c3b8b2be4a97b5d770169f84bedd082c697e3"},
 ]
 
 [package.dependencies]
-camt053 = ">=0.0.17,<1"
-camt053-loader-mt940 = ">=0.0.9"
-camt053-loader-mt942 = ">=0.0.1"
+camt053 = ">=0.0.23,<1"
+camt053-loader-mt940 = ">=0.0.23"
+camt053-loader-mt942 = ">=0.0.23"
 httpx = ">=0.27,<1"
-mcp = ">=1.2,<3"
+mcp = ">=1.30.0,<2.0 || >=2.2.dev0,<3"
 prometheus-client = ">=0.20,<2"
 pyjwt = {version = ">=2.10,<3", extras = ["crypto"]}
 
@@ -363,15 +377,14 @@ vector = ["sqlite-vec (>=0.1.6,<0.2)"]
 
 [[package]]
 name = "certifi"
-version = "2026.10.18"
+version = "2026.10.23"
 description = "Python package for providing Mozilla's CA Bundle."
-optional = true
+optional = false
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\" or extra == \"langchain\""
 files = [
-    {file = "certifi-2026.10.18-py3-none-any.whl", hash = "sha256:73191c47aaa79da394e8fee2dbc2ec827432cab56311122c9e47abf79e390f62"},
-    {file = "certifi-2026.10.18.tar.gz", hash = "sha256:b9995d97b64d0431a5af837d8ca8cd6238104d1f319f04bd93ea43124d6c861e"},
+    {file = "certifi-2026.10.23-py3-none-any.whl", hash = "sha256:e9b54de76e530bb6cf0ccd036787103acb58fd42ba930ea8bf948ddbaa2f61d1"},
+    {file = "certifi-2026.10.23.tar.gz", hash = "sha256:a9895e6e2758b371e0545e321a3a8fd1fcfd9829ada8824a936dfb16aaaf36cd"},
 ]
 
 [[package]]
@@ -2468,19 +2481,20 @@ markers = {main = "extra == \"langchain\""}
 
 [[package]]
 name = "pacs008"
-version = "0.0.12"
+version = "0.0.15"
 description = "Generate, validate, parse and audit ISO 20022 pacs.008 (FI-to-FI Customer Credit Transfer) messages with scheme-aware rules for CBPR+, HVPS+, Fedwire, CHAPS, T2 RTGS and SCT Inst."
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 markers = "extra == \"pacs\" or extra == \"all\""
 files = [
-    {file = "pacs008-0.0.12-py3-none-any.whl", hash = "sha256:61d5f9901b76de494ac459703cfb1d025261c098b6ef783ba6c5c54ec56afdf9"},
-    {file = "pacs008-0.0.12.tar.gz", hash = "sha256:598c716b4278e84394aab5ee1391e17e2c8c6ad2c9ce5f95b13e1bca7580daa6"},
+    {file = "pacs008-0.0.15-py3-none-any.whl", hash = "sha256:39c9f2782990ee02d263707413e565b3db3d6982abae14ae239a4664d70a0cfb"},
+    {file = "pacs008-0.0.15.tar.gz", hash = "sha256:e5c91e5ce8e7538db8dddf4bc1612c117108f584d3d83c0218634bb777e61220"},
 ]
 
 [package.dependencies]
 anyascii = ">=0.3,<0.4"
+certifi = ">=2026.10.19"
 click = ">=8.1,<9.0"
 colorama = ">=0.4,<0.5"
 cryptography = ">=46.0.7,<51.0.0"
@@ -2498,60 +2512,66 @@ uvicorn = {version = ">=0.20,<1.0", extras = ["standard"]}
 xmlschema = ">=3.4.0,<5.0.0"
 
 [package.extras]
-otel = ["opentelemetry-api (>=1.20,<2)", "opentelemetry-sdk (>=1.20,<2)"]
+otel = ["opentelemetry-api (>=1.45.1,<2)", "opentelemetry-sdk (>=1.20,<2)"]
 
 [[package]]
 name = "pacs008-loader-mt103"
-version = "0.0.12"
+version = "0.0.15"
 description = "Convert legacy SWIFT MT103 customer credit transfers to ISO 20022 pacs.008 flat records."
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"pacs\" or extra == \"all\""
 files = [
-    {file = "pacs008_loader_mt103-0.0.12-py3-none-any.whl", hash = "sha256:c4e6ec2c6b0b2ecbabbd330cb6d0f606d58828da4bf81d4e3d176af7457830ad"},
-    {file = "pacs008_loader_mt103-0.0.12.tar.gz", hash = "sha256:fe9216a5f46407487f4187d1b1d75d1c3caf61ce1298bdeadcf694035582faef"},
+    {file = "pacs008_loader_mt103-0.0.15-py3-none-any.whl", hash = "sha256:b92a75e47f9bd1b5fa05b60e5c19e0c50eb6cfed5c9b83a4c3a8b061fd9e82de"},
+    {file = "pacs008_loader_mt103-0.0.15.tar.gz", hash = "sha256:7897a1e99707c1a0d2240c95f071b16c0bef75087d5c749f709347e913fcf9a8"},
 ]
 
 [package.dependencies]
-pacs008 = ">=0.0.7,<1"
+pacs008 = ">=0.0.15,<1"
 
 [package.extras]
-dev = ["interrogate (>=1.7)", "mypy (>=1.11)", "pytest (>=8)", "pytest-cov (>=5)", "ruff (>=0.6)"]
+dev = ["complexipy (>=8.1.0)", "hypothesis (>=6.100)", "interrogate (>=1.7)", "mypy (>=1.11)", "pytest (>=8)", "pytest-cov (>=5)", "radon (>=6.0.1)", "ruff (>=0.6)"]
 
 [[package]]
 name = "pacs008-mcp"
-version = "0.0.14"
+version = "0.0.15"
 description = "Model Context Protocol (MCP) server exposing the pacs008 ISO 20022 FI-to-FI Customer Credit Transfer library as agent tools."
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 markers = "extra == \"pacs\" or extra == \"all\""
 files = [
-    {file = "pacs008_mcp-0.0.14-py3-none-any.whl", hash = "sha256:3a282258111261be08f4ac6070c2abe1b237231f85d9079bc8bea7b68b8659f2"},
-    {file = "pacs008_mcp-0.0.14.tar.gz", hash = "sha256:3d4f10f951dedaf9e61bcb5b12e6b55cd60b0881713de290da9c9125333c39fe"},
+    {file = "pacs008_mcp-0.0.15-py3-none-any.whl", hash = "sha256:4b17d8cf82454ad2ac28a13c58dcb38a9d40531756a80843a855f398951ed78c"},
+    {file = "pacs008_mcp-0.0.15.tar.gz", hash = "sha256:2e61a216f7e023342414a4823611a83a3ac0cf31748002b2fcefe2538f96dc77"},
 ]
 
 [package.dependencies]
+anyio = ">=4.14.2,<5"
+certifi = ">=2026.10.19"
 cryptography = ">=50.0.0"
-mcp = ">=1.2,<3"
-pacs008 = ">=0.0.10"
-pacs008-loader-mt103 = ">=0.0.1"
+httpcore2 = {version = ">=2.10.0", markers = "sys_platform != \"emscripten\""}
+httpx2 = ">=2.12.0"
+mcp = ">=1.30.0,<2.0 || >=2.2.dev0,<3"
+opentelemetry-api = ">=1.45.1"
+pacs008 = ">=0.0.15,<1"
+pacs008-loader-mt103 = ">=0.0.15,<1"
+pyjwt = {version = ">=2.15.0", extras = ["crypto"]}
 
 [package.extras]
 online = ["httpx (>=0.24,<1)"]
 
 [[package]]
 name = "pain001"
-version = "0.0.72"
+version = "0.0.74"
 description = "Pain001 is a Python Library for Automating ISO 20022-Compliant Payment Files Using CSV Data."
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 markers = "extra == \"pain\" or extra == \"all\""
 files = [
-    {file = "pain001-0.0.72-py3-none-any.whl", hash = "sha256:9b67287e29773b49eedd255626a5916bde000143d244913d467f45fbfe24d4a4"},
-    {file = "pain001-0.0.72.tar.gz", hash = "sha256:413be466879b594daf83a3094f008f2b0b48be80fe09128dff208cd2541cf34c"},
+    {file = "pain001-0.0.74-py3-none-any.whl", hash = "sha256:21db90d2178b6dbb55dd66dbc5b09421450bb4b1fd2063bd0c34c941db193b04"},
+    {file = "pain001-0.0.74.tar.gz", hash = "sha256:927c6a831b74f937906ea1f072ea3177ea9248c9ac847bba7d5a13e593eb56cf"},
 ]
 
 [package.dependencies]
@@ -2565,55 +2585,60 @@ rich = ">=15.0.0,<16"
 xmlschema = ">=4.3.2,<5.0.0"
 
 [package.extras]
-api = ["fastapi (>=0.141.1)", "uvicorn[standard] (>=0.53.0)"]
+api = ["fastapi (>=0.141.1)", "uvicorn[standard] (>=0.54.0)"]
 fast = ["lxml (>=6.1.3,<7)"]
-gpg = ["python-gnupg (>=0.5,<1)"]
+gpg = ["python-gnupg (>=0.5.7,<1)"]
 lsp = ["pygls (>=2.1,<3)"]
-mcp = ["mcp (>=2.1.1,<3)"]
-otel = ["opentelemetry-api (>=1.27,<2)", "opentelemetry-exporter-otlp-proto-http (>=1.27,<2)", "opentelemetry-sdk (>=1.27,<2)"]
+mcp = ["mcp (>=2.3.0,<3)"]
+otel = ["certifi (>=2026.10.19)", "opentelemetry-api (>=1.27,<2)", "opentelemetry-exporter-otlp-proto-http (>=1.27,<2)", "opentelemetry-sdk (>=1.27,<2)"]
 parquet = ["pyarrow (>=25.0.1,<26.0.0)"]
 redis = ["redis (>=8.1.0,<9)"]
-rules = ["cel-python (>=0.5,<0.6)", "holidays (>=0.105,<1)"]
+rules = ["cel-python (>=0.5,<0.6)", "holidays (>=0.106,<1)"]
 upload = ["paramiko (>=5.0,<6)"]
 
 [[package]]
 name = "pain001-loader-mt101"
-version = "0.0.72"
+version = "0.0.74"
 description = "Convert legacy SWIFT MT101 requests for transfer to ISO 20022 pain.001 flat records."
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"pain\" or extra == \"all\""
 files = [
-    {file = "pain001_loader_mt101-0.0.72-py3-none-any.whl", hash = "sha256:277cf608779434133129aa143836fb6bcac0abc279c0b9b433f23c24b4b9b220"},
-    {file = "pain001_loader_mt101-0.0.72.tar.gz", hash = "sha256:a500c31643f2efcfaf7a1bed7fb42bfff12543067df6757cf350b437b2b38cd2"},
+    {file = "pain001_loader_mt101-0.0.74-py3-none-any.whl", hash = "sha256:9c62e5036ff3acc7601751a2ec94ac09d19a794d029b4c4014864e16cc854f53"},
+    {file = "pain001_loader_mt101-0.0.74.tar.gz", hash = "sha256:123b36fadbdd5637b9609bc1cec4f033aa39e2209caf5634e10596c2f570a8e4"},
 ]
 
 [package.dependencies]
-pain001 = ">=0.0.55,<1"
+pain001 = ">=0.0.74,<1"
 
 [package.extras]
-dev = ["interrogate (>=1.7)", "mypy (>=1.11)", "pytest (>=8)", "pytest-benchmark (>=5)", "pytest-cov (>=5)", "ruff (>=0.6)"]
+dev = ["complexipy (>=8.1.0)", "interrogate (>=1.7)", "mypy (>=1.11)", "pytest (>=8)", "pytest-benchmark (>=5)", "pytest-cov (>=5)", "radon (>=6.0.1)", "ruff (>=0.6)"]
 docs = ["furo (>=2024)", "myst-parser (>=3)", "sphinx (>=7)"]
 
 [[package]]
 name = "pain001-mcp"
-version = "0.0.73"
+version = "0.0.74"
 description = "Model Context Protocol (MCP) server exposing the pain001 ISO 20022 Customer Credit Transfer Initiation library as agent tools."
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 markers = "extra == \"pain\" or extra == \"all\""
 files = [
-    {file = "pain001_mcp-0.0.73-py3-none-any.whl", hash = "sha256:83e81af76534fb2a8b18dff74a3166894f403e8432d1a40074e653712a48d12f"},
-    {file = "pain001_mcp-0.0.73.tar.gz", hash = "sha256:ce01b02e1aa722bde6f5f366ddfd365b4415259e061817fbdf240e9f59ea0c99"},
+    {file = "pain001_mcp-0.0.74-py3-none-any.whl", hash = "sha256:3b1e0f560a93f040755e1bbe3ec1783f9e162ba60c2f69bbc23d381a0b7961bc"},
+    {file = "pain001_mcp-0.0.74.tar.gz", hash = "sha256:8cee36b83251a3b642645c74ad31190f5a5bc7079edd32b1741ea5d094479257"},
 ]
 
 [package.dependencies]
 anyio = ">=4.14.2,<5"
-mcp = ">=1.2,<3"
-pain001 = {version = ">=0.0.71", extras = ["fast"]}
-pain001-loader-mt101 = ">=0.0.1"
+cryptography = ">=50.0.0"
+httpcore2 = {version = ">=2.10.0", markers = "sys_platform != \"emscripten\""}
+httpx2 = ">=2.12.0"
+mcp = ">=1.30.0,<2.0 || >=2.2.dev0,<3"
+opentelemetry-api = ">=1.45.1"
+pain001 = {version = ">=0.0.74,<1", extras = ["fast"]}
+pain001-loader-mt101 = ">=0.0.74,<1"
+pyjwt = {version = ">=2.15.0", extras = ["crypto"]}
 
 [[package]]
 name = "pathspec"
@@ -4788,4 +4813,4 @@ pain = ["pain001-mcp"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "1cf773d5dab35d123321bde5500e6a5a29401a3988fa72ae38059737e5659c9b"
+content-hash = "33f670ae018e3b16d012e041ce68500b6ddcb9a0b8a91a8e64727f5ab549f947"

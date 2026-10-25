@@ -8,7 +8,9 @@
 #     --python-version 3.12 requirements/fuzz.in -o requirements/fuzz.txt
 -r ci.in
 atheris>=3.0.0
-pain001-mcp>=0.0.62
-pacs008-mcp>=0.0.9
-camt053-mcp>=0.0.17
-acmt001-mcp>=0.0.8
+pain001-mcp>=0.0.74
+pacs008-mcp>=0.0.15
+camt053-mcp>=0.0.23
+acmt001-mcp>=0.0.13
+# certifi < 2026.10.19 is affected by PYSEC-2026-4320.
+certifi>=2026.10.19

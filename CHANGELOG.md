@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.18] - 2026-10-20
+## [0.0.18] - 2026-10-25
 
 ### Added
 
@@ -29,6 +29,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The family floors move to the releases this gateway ships with, in
+  lockstep: `pain001-mcp >=0.0.74`, `pacs008-mcp >=0.0.15`,
+  `camt053-mcp >=0.0.23` and `acmt001-mcp >=0.0.13` (were 0.0.62, 0.0.9,
+  0.0.17 and 0.0.8), in the extras, the Poetry dependencies and
+  `requirements/fuzz.in`. `tests/test_extras_resolve.py` asked whether each
+  constraint admits the xmlschema-4 release itself, so any floor above it
+  failed; it now requires the floor to sit at or above that release and to
+  resolve, and still fails on a lower floor or an upper cap.
 - `benches/bench_gateway.py` splits `render` (cyclomatic 12, cognitive 16)
   into helpers, with byte-identical output, and `scripts/verify_versions.py`
   splits `main` (cyclomatic 17), so every function is within the limits.
@@ -53,11 +61,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+- `certifi` is floored at 2026.10.19 (PYSEC-2026-4320) beside
+  `cryptography`; `poetry.lock` and `requirements/fuzz.txt` held
+  2026.10.18.
 - The release toolchain (`requirements/build.txt`) floors `filelock` at
   4.2.1 (GHSA-9vhv-jxww-xfm5, GHSA-567q-5qvw-pf92, GHSA-v4x8-3wr5-3wq8)
   and `certifi` at 2026.10.19 (PYSEC-2026-4320); it pinned filelock
   4.0.10 and certifi 2026.7.22. filelock 4.2.1 needs Python 3.11, so the
   file is compiled for 3.12, the Python of the publish and SBOM jobs.
+- The same tree floors `virtualenv` at 21.14.13 (GHSA-cx6f-vjhg-g3cc: from
+  21.14.9, the bash activator leaves `--prompt` unescaped in `PS1`); it
+  pinned 21.14.11.
 
 ## [0.0.17] - 2026-10-20
 
