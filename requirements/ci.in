@@ -17,3 +17,6 @@ ruff>=0.1,<0.18
 black>=26.3.1
 mypy>=1.11,<3.0
 reuse[charset-normalizer]>=5.0
+# Complexity gate: scripts/check_complexity.py and complexipy.
+radon>=6.0
+complexipy>=8.1

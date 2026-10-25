@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 [project]
 name = "iso20022-mcp"
-version = "0.0.17"
+version = "0.0.18"
 description = "Unified Model Context Protocol (MCP) gateway for ISO 20022: one small set of meta-tools (search, describe, validate, generate, parse) routing across the pain, pacs, camt and acmt message families."
 authors = [
     { name = "Sebastien Rousseau", email = "sebastian.rousseau@gmail.com" },
@@ -29,15 +29,15 @@ dynamic = ["classifiers", "dependencies"]
 # Each spec here must equal the one in [tool.poetry.dependencies];
 # tests/test_extras_resolve.py fails if they drift apart.
 [project.optional-dependencies]
-pain = ["pain001-mcp>=0.0.62"]
-pacs = ["pacs008-mcp>=0.0.9"]
-camt = ["camt053-mcp>=0.0.17"]
-acmt = ["acmt001-mcp>=0.0.8"]
+pain = ["pain001-mcp>=0.0.74"]
+pacs = ["pacs008-mcp>=0.0.15"]
+camt = ["camt053-mcp>=0.0.23"]
+acmt = ["acmt001-mcp>=0.0.13"]
 all = [
-    "pain001-mcp>=0.0.62",
-    "pacs008-mcp>=0.0.9",
-    "camt053-mcp>=0.0.17",
-    "acmt001-mcp>=0.0.8",
+    "pain001-mcp>=0.0.74",
+    "pacs008-mcp>=0.0.15",
+    "camt053-mcp>=0.0.23",
+    "acmt001-mcp>=0.0.13",
 ]
 # Framework adapters -- one extra per supported agent framework.
 langchain = ["langchain-core>=0.2"]
@@ -70,10 +70,13 @@ mcp = ">=1.30.0,!=2.0.*,!=2.1.*,<3"
 # broke 0.0.6. The whole family is now on xmlschema >=4.3.2 (camt053 0.0.17,
 # acmt001 0.0.5), so the floors move together and the cap is no longer load-
 # bearing. `test_extras_resolve.py` asserts the four agree.
-pain001-mcp = { version = ">=0.0.62", optional = true }
-pacs008-mcp = { version = ">=0.0.9", optional = true }
-camt053-mcp = { version = ">=0.0.17", optional = true }
-acmt001-mcp = { version = ">=0.0.8", optional = true }
+# The suite releases in lockstep, so each floor is the family release this
+# gateway ships with: pain001-mcp 0.0.74, pacs008-mcp 0.0.15, camt053-mcp
+# 0.0.23 and acmt001-mcp 0.0.13.
+pain001-mcp = { version = ">=0.0.74", optional = true }
+pacs008-mcp = { version = ">=0.0.15", optional = true }
+camt053-mcp = { version = ">=0.0.23", optional = true }
+acmt001-mcp = { version = ">=0.0.13", optional = true }
 # Optional agent-framework adapters (see iso20022_mcp/adapters.py). These are
 # heavy and conflict-prone, so they are strictly optional and are NOT test or
 # runtime dependencies; the base install never imports them.
@@ -85,6 +88,9 @@ langchain-core = { version = ">=0.2", optional = true }
 # here so the patched line is the only resolvable one; the pins in
 # requirements/ already sit at 50.0.0.
 cryptography = ">=50.0.0"
+# Transitive, via `mcp` -> `httpx`: certifi < 2026.10.19 is affected by
+# PYSEC-2026-4320, and poetry.lock held 2026.10.18.
+certifi = ">=2026.10.19"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=9.0.3,<10.0.0"

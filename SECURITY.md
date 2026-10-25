@@ -11,8 +11,8 @@ says what each release changed and anything you need to do.
 
 | Version | Supported |
 | ------- | --------- |
-| 0.0.17 (latest) | :white_check_mark: |
-| < 0.0.17 | :x: |
+| 0.0.18 (latest) | :white_check_mark: |
+| < 0.0.18 | :x: |
 
 ## Reporting a vulnerability
 
@@ -113,8 +113,12 @@ reaches an import, this becomes a very different package.
 The server speaks MCP over stdio by default. `--transport
 streamable-http` and `--transport sse` open a listener that binds
 `127.0.0.1` unless `--host` says otherwise and carries no authentication
-or TLS of its own. Do not bind a routable address without a gateway in
-front of it that adds both. Records handed to the tools are routed, not
+of its own. With `--ssl-certfile` and `--ssl-keyfile` (PEM files) the
+listener serves HTTPS only, through uvicorn's TLS; without them it is plain
+HTTP. On a loopback bind, DNS-rebinding protection admits only `localhost`
+hosts and origins, over `http://` or `https://`; a routable bind has none.
+Do not bind a routable address without TLS and an authenticating gateway in
+front of it. Records handed to the tools are routed, not
 executed; treat payment data passed through them as PII that reaches the
 model's context and any transcript kept of it.
 

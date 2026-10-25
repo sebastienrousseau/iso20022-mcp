@@ -43,8 +43,9 @@ their own policies. Their versions are floored and monitored here.
 1. **Client to server.** Over stdio, the boundary is the client process
    that spawned the server: anything that can write to its stdin already
    runs as the same user. Over `streamable-http` and `sse`, the boundary is
-   the socket, which binds `127.0.0.1` by default and has no
-   authentication or TLS of its own ([`SECURITY.md`](../SECURITY.md#transports)).
+   the socket, which binds `127.0.0.1` by default, serves HTTPS when given
+   a certificate and key, and has no authentication of its own
+   ([`SECURITY.md`](../SECURITY.md#transports)).
 2. **Server to family package.** Crossed only through `registry.resolve`,
    which maps a message type to a module and function named in the
    registry table.
@@ -77,7 +78,8 @@ their own policies. Their versions are floored and monitored here.
 | CWE-1395 vulnerable dependencies | Floors and exclusions in `pyproject.toml`; Dependabot; `pip-audit`; zero open alerts before a release | `pyproject.toml` (`mcp` excludes GHSA-84m7-p3x7-pcfv) |
 | CWE-829 untrusted build inputs | Every action pinned by SHA; every workflow `pip install` hash-pinned | OpenSSF Scorecard Pinned-Dependencies 10 |
 | CWE-798 hard-coded credentials | None held; OIDC publishing; secret scanning on | Zero secret-scanning alerts |
-| CWE-306 missing authentication on HTTP transports | Documented: loopback by default, a gateway with authentication and TLS required for any routable address | `SECURITY.md#transports` |
+| CWE-306 missing authentication on HTTP transports | Documented: loopback by default, a gateway with authentication required for any routable address | `SECURITY.md#transports` |
+| CWE-319 cleartext transmission | `--ssl-certfile`/`--ssl-keyfile` serve the HTTP transports over HTTPS (uvicorn TLS) | `tests/test_transports.py` |
 
 ## Assurance evidence
 
@@ -94,6 +96,6 @@ their own policies. Their versions are floored and monitored here.
 
 - A single maintainer: review of changes is by CI and the maintainer
   only ([`GOVERNANCE.md`](../GOVERNANCE.md)).
-- The HTTP transports rely on the operator placing an authenticating TLS
-  gateway in front of any non-loopback bind.
+- The HTTP transports rely on the operator to supply TLS and to place an
+  authenticating gateway in front of any non-loopback bind.
 - Payment data passed to the tools reaches the model's context.

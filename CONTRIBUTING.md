@@ -50,8 +50,12 @@ label; reopen the linked issue, or open a pull request that names it.
 - **Docstrings:** [PEP 257](https://peps.python.org/pep-0257/).
 - **Licensing:** every file carries SPDX copyright and licence lines
   ([REUSE](https://reuse.software/)); `reuse lint` checks it.
+- **Complexity:** per function, cyclomatic complexity at most 10,
+  cognitive at most 15, Halstead difficulty at most 30 and at most 60
+  lines; at most 500 lines per file. `scripts/check_complexity.py` and
+  `complexipy` check it, against an empty baseline.
 
-Style, types and licensing are CI gates: a pull request that does not
+Style, types, licensing and complexity are CI gates: a pull request that does not
 comply cannot be merged. Docstrings are checked in review. No blanket suppressions; a specific inline one needs a comment
 saying why.
 
