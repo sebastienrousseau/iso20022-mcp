@@ -40,7 +40,7 @@ all = [
     "acmt001-mcp>=0.0.13",
 ]
 # Framework adapters -- one extra per supported agent framework.
-langchain = ["langchain-core>=0.2"]
+langchain = ["langchain-core>=1.7.0"]
 
 [project.urls]
 homepage = "https://iso20022-mcp.com"
@@ -80,7 +80,7 @@ acmt001-mcp = { version = ">=0.0.13", optional = true }
 # Optional agent-framework adapters (see iso20022_mcp/adapters.py). These are
 # heavy and conflict-prone, so they are strictly optional and are NOT test or
 # runtime dependencies; the base install never imports them.
-langchain-core = { version = ">=0.2", optional = true }
+langchain-core = { version = ">=1.7.0", optional = true }
 
 # Transitive, via `mcp` -> `pyjwt[crypto]`. Nothing in this tree
 # constrains it, so a resolver is free to pick a version in the
