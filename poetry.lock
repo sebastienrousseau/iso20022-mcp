@@ -63,7 +63,7 @@ description = "Document parameters, class attributes, return types, and variable
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "annotated_doc-0.0.5-py3-none-any.whl", hash = "sha256:117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101"},
     {file = "annotated_doc-0.0.5.tar.gz", hash = "sha256:c7e58ce09192557605d8bbd92836d7e1d520ac9580096042c0bfd197efacf1bb"},
@@ -88,7 +88,7 @@ description = "Unicode to ASCII transliteration"
 optional = true
 python-versions = ">=3.3"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"pacs\""
 files = [
     {file = "anyascii-0.3.3-py3-none-any.whl", hash = "sha256:f5ab5e53c8781a36b5a40e1296a0eeda2f48c649ef10c3921c1381b1d00dee7a"},
     {file = "anyascii-0.3.3.tar.gz", hash = "sha256:c94e9dd9d47b3d9494eca305fef9447d00b4bf1a32aff85aa746fa3ec7fb95c3"},
@@ -278,7 +278,7 @@ description = "Camt053 is a Python library for reading ISO 20022 camt Bank-to-Cu
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
-markers = "extra == \"camt\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"camt\""
 files = [
     {file = "camt053-0.0.23-py3-none-any.whl", hash = "sha256:390edeaba1c7915d1b7237c38ef47a3f1a540e714f1260cce6f9422491fd7f78"},
     {file = "camt053-0.0.23.tar.gz", hash = "sha256:4f37f08cfb0d3febe5eedb92660a7ebe2087fd4c8baf5fa9808c4ad4f8cefc90"},
@@ -318,7 +318,7 @@ description = "Convert legacy SWIFT MT940 bank statements to camt.053 ParsedDocu
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"camt\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"camt\""
 files = [
     {file = "camt053_loader_mt940-0.0.23-py3-none-any.whl", hash = "sha256:983aea6e595c591f69846d9649aac9b793554bde059c3384dfdf5441f80efa73"},
     {file = "camt053_loader_mt940-0.0.23.tar.gz", hash = "sha256:235b05b938832f3f70e9bd14e6919786f59c4e2e50fe25b36096b2d69df38718"},
@@ -337,7 +337,7 @@ description = "Convert legacy SWIFT MT942 interim transaction reports to camt.05
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"camt\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"camt\""
 files = [
     {file = "camt053_loader_mt942-0.0.23-py3-none-any.whl", hash = "sha256:9a9414394ba88dbf6d9e05be91fc6b6145fac1b738ca1fd670bfa35288ba1a58"},
     {file = "camt053_loader_mt942-0.0.23.tar.gz", hash = "sha256:5c522189b4a5b91c6caacc5d1641b5faa5edab0d6024d701be61775f24e23998"},
@@ -356,7 +356,7 @@ description = "Model Context Protocol (MCP) server exposing the camt053 ISO 2002
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
-markers = "extra == \"camt\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"camt\""
 files = [
     {file = "camt053_mcp-0.0.23-py3-none-any.whl", hash = "sha256:bfb67d133b263fda115c2cdf9cd38005b9e3e9e01edb128a8ea81faf5f1668a7"},
     {file = "camt053_mcp-0.0.23.tar.gz", hash = "sha256:7cc6eb73a699c1f9481d04c8ff1c3b8b2be4a97b5d770169f84bedd082c697e3"},
@@ -695,7 +695,7 @@ files = [
     {file = "click-8.5.0-py3-none-any.whl", hash = "sha256:255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360"},
     {file = "click-8.5.0.tar.gz", hash = "sha256:ba0d2089de75ea0310e2dde03160e6ca10009947fb95a182f9b54021bb272e34"},
 ]
-markers = {main = "sys_platform != \"emscripten\" or extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\" or extra == \"pain\""}
+markers = {main = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"pain\" or sys_platform != \"emscripten\""}
 
 [[package]]
 name = "colorama"
@@ -708,7 +708,7 @@ files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
-markers = {main = "extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\"", dev = "sys_platform == \"win32\" or platform_system == \"Windows\""}
+markers = {main = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\"", dev = "platform_system == \"Windows\" or sys_platform == \"win32\""}
 
 [[package]]
 name = "coverage"
@@ -930,7 +930,7 @@ description = "XML bomb protection for Python stdlib modules"
 optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 groups = ["main"]
-markers = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pain\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
     {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
@@ -956,7 +956,7 @@ description = "XPath 1.0/2.0/3.0/3.1 parsers and selectors for ElementTree and l
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pain\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "elementpath-5.1.4-py3-none-any.whl", hash = "sha256:5ec8d7bb44b16c98414a6a95e20cb150f3cbfc3cac65edc14773288c7a937376"},
     {file = "elementpath-5.1.4.tar.gz", hash = "sha256:3c912a9c41311ac5244c038867670d7c0b0fec0e444813608e5b846dbb3428ac"},
@@ -992,7 +992,7 @@ description = "FastAPI framework, high performance, easy to learn, fast to code,
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "fastapi-0.149.0-py3-none-any.whl", hash = "sha256:fc4a5cf7e14f607a48eb1ab98147e9140943e88ccd0c8791d72c0a89b1159a35"},
     {file = "fastapi-0.149.0.tar.gz", hash = "sha256:aba5779358d0c5233759ddcddd84fe7269d71f775fd754b653b608f770558a41"},
@@ -1019,7 +1019,7 @@ description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "sys_platform != \"emscripten\" or extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\" or extra == \"langchain\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"langchain\" or sys_platform != \"emscripten\""
 files = [
     {file = "h11-0.16.0-py3-none-any.whl", hash = "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"},
     {file = "h11-0.16.0.tar.gz", hash = "sha256:4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1"},
@@ -1032,7 +1032,7 @@ description = "A minimal low-level HTTP client."
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\" or extra == \"langchain\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"langchain\""
 files = [
     {file = "httpcore-1.0.9-py3-none-any.whl", hash = "sha256:2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55"},
     {file = "httpcore-1.0.9.tar.gz", hash = "sha256:6e34463af53fd2ab5d807f399a9b45ea31c3dfa2276f15a2c3f00afff6e176e8"},
@@ -1078,7 +1078,7 @@ description = "A collection of framework independent HTTP protocol utils."
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "httptools-0.9.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:eacf0f45ca3ff84c01481c60c15da9ee56711f7292f66663df0f57af61e011c2"},
     {file = "httptools-0.9.0-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:f0ef48ce353f6b6a52232ba23d0983d4c2c84c84a778899404e34b4718509bf2"},
@@ -1207,7 +1207,7 @@ description = "The next generation HTTP client."
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\" or extra == \"langchain\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"langchain\""
 files = [
     {file = "httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"},
     {file = "httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc"},
@@ -1529,7 +1529,7 @@ description = "A very fast and expressive template engine."
 optional = true
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pain\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "jinja2-3.1.6-py3-none-any.whl", hash = "sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"},
     {file = "jinja2-3.1.6.tar.gz", hash = "sha256:0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d"},
@@ -1849,7 +1849,7 @@ description = "Powerful and Pythonic XML processing library combining libxml2/li
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\""
+markers = "extra == \"all\" or extra == \"pain\" or extra == \"pacs\""
 files = [
     {file = "lxml-6.1.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:40bcbd9f94166ffe925811e730607385cec959f42fb1bb7dad83748680465221"},
     {file = "lxml-6.1.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:05f5bce9af14fd1506997594bd81cee6d9c6b58ea80a39c058327aa6371ed9e9"},
@@ -2046,7 +2046,7 @@ files = [
     {file = "markdown_it_py-4.2.0-py3-none-any.whl", hash = "sha256:9f7ebbcd14fe59494226453aed97c1070d83f8d24b6fc3a3bcf9a38092641c4a"},
     {file = "markdown_it_py-4.2.0.tar.gz", hash = "sha256:04a21681d6fbb623de53f6f364d352309d4094dd4194040a10fd51833e418d49"},
 ]
-markers = {main = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\""}
+markers = {main = "extra == \"acmt\" or extra == \"all\" or extra == \"pain\" or extra == \"pacs\" or extra == \"camt\""}
 
 [package.dependencies]
 mdurl = ">=0.1,<1.0"
@@ -2067,7 +2067,7 @@ description = "Safely add untrusted strings to HTML/XML markup."
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pain\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "markupsafe-3.0.4-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:dd8ea6ebee7aedbf7c749fa80521d9ccf1ba473e0d1e14805caafbaad281c889"},
     {file = "markupsafe-3.0.4-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:dff05cb7016dff1e9fd68f4122c127b65dfc59de5306cfb7ad92f956f230bee2"},
@@ -2287,7 +2287,7 @@ files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
 ]
-markers = {main = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\""}
+markers = {main = "extra == \"acmt\" or extra == \"all\" or extra == \"pain\" or extra == \"pacs\" or extra == \"camt\""}
 
 [[package]]
 name = "mypy"
@@ -2486,7 +2486,7 @@ description = "Generate, validate, parse and audit ISO 20022 pacs.008 (FI-to-FI 
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"pacs\""
 files = [
     {file = "pacs008-0.0.15-py3-none-any.whl", hash = "sha256:39c9f2782990ee02d263707413e565b3db3d6982abae14ae239a4664d70a0cfb"},
     {file = "pacs008-0.0.15.tar.gz", hash = "sha256:e5c91e5ce8e7538db8dddf4bc1612c117108f584d3d83c0218634bb777e61220"},
@@ -2521,7 +2521,7 @@ description = "Convert legacy SWIFT MT103 customer credit transfers to ISO 20022
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"pacs\""
 files = [
     {file = "pacs008_loader_mt103-0.0.15-py3-none-any.whl", hash = "sha256:b92a75e47f9bd1b5fa05b60e5c19e0c50eb6cfed5c9b83a4c3a8b061fd9e82de"},
     {file = "pacs008_loader_mt103-0.0.15.tar.gz", hash = "sha256:7897a1e99707c1a0d2240c95f071b16c0bef75087d5c749f709347e913fcf9a8"},
@@ -2540,7 +2540,7 @@ description = "Model Context Protocol (MCP) server exposing the pacs008 ISO 2002
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"pacs\""
 files = [
     {file = "pacs008_mcp-0.0.15-py3-none-any.whl", hash = "sha256:4b17d8cf82454ad2ac28a13c58dcb38a9d40531756a80843a855f398951ed78c"},
     {file = "pacs008_mcp-0.0.15.tar.gz", hash = "sha256:2e61a216f7e023342414a4823611a83a3ac0cf31748002b2fcefe2538f96dc77"},
@@ -2568,7 +2568,7 @@ description = "Pain001 is a Python Library for Automating ISO 20022-Compliant Pa
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
-markers = "extra == \"pain\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"pain\""
 files = [
     {file = "pain001-0.0.74-py3-none-any.whl", hash = "sha256:21db90d2178b6dbb55dd66dbc5b09421450bb4b1fd2063bd0c34c941db193b04"},
     {file = "pain001-0.0.74.tar.gz", hash = "sha256:927c6a831b74f937906ea1f072ea3177ea9248c9ac847bba7d5a13e593eb56cf"},
@@ -2603,7 +2603,7 @@ description = "Convert legacy SWIFT MT101 requests for transfer to ISO 20022 pai
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"pain\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"pain\""
 files = [
     {file = "pain001_loader_mt101-0.0.74-py3-none-any.whl", hash = "sha256:9c62e5036ff3acc7601751a2ec94ac09d19a794d029b4c4014864e16cc854f53"},
     {file = "pain001_loader_mt101-0.0.74.tar.gz", hash = "sha256:123b36fadbdd5637b9609bc1cec4f033aa39e2209caf5634e10596c2f570a8e4"},
@@ -2623,7 +2623,7 @@ description = "Model Context Protocol (MCP) server exposing the pain001 ISO 2002
 optional = true
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
-markers = "extra == \"pain\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"pain\""
 files = [
     {file = "pain001_mcp-0.0.74-py3-none-any.whl", hash = "sha256:3b1e0f560a93f040755e1bbe3ec1783f9e162ba60c2f69bbc23d381a0b7961bc"},
     {file = "pain001_mcp-0.0.74.tar.gz", hash = "sha256:8cee36b83251a3b642645c74ad31190f5a5bc7079edd32b1741ea5d094479257"},
@@ -2702,7 +2702,7 @@ description = "Python client for the Prometheus monitoring system."
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"camt\" or extra == \"all\""
+markers = "extra == \"all\" or extra == \"camt\""
 files = [
     {file = "prometheus_client-0.26.0-py3-none-any.whl", hash = "sha256:fa93d06737aa02bacd05794768508bb97d2fbee28cb3bca04eaae92f0ca953d6"},
     {file = "prometheus_client-0.26.0.tar.gz", hash = "sha256:04a91bcf94e2cf74a44a1a874d651a2e853ed354b6e822f3b7487751465d5c2b"},
@@ -2720,7 +2720,7 @@ description = "Python library for Apache Arrow"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\""
 files = [
     {file = "pyarrow-25.0.1-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:0b1edbb2f385a6a65e9711b62ba86ac54a7816a3f8d17bb3e8a5929d65fb2485"},
     {file = "pyarrow-25.0.1-cp310-cp310-macosx_12_0_x86_64.whl", hash = "sha256:a4dd8bf99a8fac133efc0ed6a92f5fddbe2adba0d0f6dd720e39ba9855cea85c"},
@@ -2963,7 +2963,7 @@ files = [
     {file = "pygments-2.21.0-py3-none-any.whl", hash = "sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"},
     {file = "pygments-2.21.0.tar.gz", hash = "sha256:610ca751c9bc2492b38eb9a38a7fbc93edbbb2d7182edaf34e66ae493dee5c8c"},
 ]
-markers = {main = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\""}
+markers = {main = "extra == \"acmt\" or extra == \"all\" or extra == \"pain\" or extra == \"pacs\" or extra == \"camt\""}
 
 [package.extras]
 windows-terminal = ["colorama (>=0.4.6)"]
@@ -3038,7 +3038,7 @@ description = "Read key-value pairs from a .env file and set them as environment
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "python_dotenv-1.2.4-py3-none-any.whl", hash = "sha256:42269a8a5b3fd54ffa6f3d84b18abed50064717576b4ecf03dc4a55d8aa04fdc"},
     {file = "python_dotenv-1.2.4.tar.gz", hash = "sha256:f0d53e69935a851c0dcc78f3ab7aaccd8cabef0b92382b576b824212902873c0"},
@@ -3228,7 +3228,7 @@ files = [
     {file = "pyyaml-6.0.3-cp39-cp39-win_amd64.whl", hash = "sha256:2e71d11abed7344e42a8849600193d15b6def118602c4c176f748e4583246007"},
     {file = "pyyaml-6.0.3.tar.gz", hash = "sha256:d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f"},
 ]
-markers = {main = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\" or extra == \"langchain\""}
+markers = {main = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"pain\" or extra == \"langchain\""}
 
 [[package]]
 name = "referencing"
@@ -3297,7 +3297,7 @@ files = [
     {file = "rich-15.0.0-py3-none-any.whl", hash = "sha256:33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb"},
     {file = "rich-15.0.0.tar.gz", hash = "sha256:edd07a4824c6b40189fb7ac9bc4c52536e9780fbbfbddf6f1e2502c31b068c36"},
 ]
-markers = {main = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\""}
+markers = {main = "extra == \"acmt\" or extra == \"all\" or extra == \"pain\" or extra == \"pacs\" or extra == \"camt\""}
 
 [package.dependencies]
 markdown-it-py = ">=2.2.0"
@@ -3573,30 +3573,30 @@ files = [
 
 [[package]]
 name = "ruff"
-version = "0.17.1"
+version = "0.17.2"
 description = "An extremely fast Python linter and code formatter, written in Rust."
 optional = false
 python-versions = ">=3.7"
 groups = ["dev"]
 files = [
-    {file = "ruff-0.17.1-py3-none-linux_armv6l.whl", hash = "sha256:1796c41eafec66f4635125dd1e074a7aa27b8d20c187d484360acf11d247fc4a"},
-    {file = "ruff-0.17.1-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:8eadb09a788010be29c895418bdfa513e4e1c65e64b94e5b19e4cd381f6cc7fb"},
-    {file = "ruff-0.17.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:29b454f18ca3eeaf37fbf140841dcf27d36109e29dee9aae8acecb68c26c6f74"},
-    {file = "ruff-0.17.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:872e03dd231744d6c5ec5c8af6be52b71323fc6ee096e4c8b34d9f844ee3b978"},
-    {file = "ruff-0.17.1-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:4c0d6cb5f8fbac77eec9af49f4fc0eaf856b05545e372b0694d24b4e76b1c640"},
-    {file = "ruff-0.17.1-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:78beced4a3c94dfedbee4b999b95b6a27b35820fdc0afbacc6d37a8da26c1cd1"},
-    {file = "ruff-0.17.1-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:7feefc63921202894f0e158b0e32f45a5950d70a7fb693ccb9264816c25b1c05"},
-    {file = "ruff-0.17.1-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:684154861a819bf1f433669d2a0ce9c3e54677c65b8ebb866cc2a7ec86345785"},
-    {file = "ruff-0.17.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a6ef98e51de8ef38082f90653ceeb84944bd7673783eea13e1647c5b9b064189"},
-    {file = "ruff-0.17.1-py3-none-manylinux_2_31_riscv64.whl", hash = "sha256:8f9aa5b5bd5fa1937803ea609c8f153b8de39bf3e0e149897ae34b0c5b52f467"},
-    {file = "ruff-0.17.1-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:80e53b0e5faa3c5667f035daaa032893ae42b7cfe708c886d39ed131e54688ab"},
-    {file = "ruff-0.17.1-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:056c5d5fa0ac790051ae165d7035c7bf956d02de2db557f2e9b31d877a505fca"},
-    {file = "ruff-0.17.1-py3-none-musllinux_1_2_i686.whl", hash = "sha256:bd8f5a55b10f371642eacd0e8665a42a8b97da15c9a7187c79e697b77b5e0ce4"},
-    {file = "ruff-0.17.1-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:ce05e6f3973611d9550a600e04bb531061e368baba31610eb57c1509a8f21a0a"},
-    {file = "ruff-0.17.1-py3-none-win32.whl", hash = "sha256:1de0030a8aa78c65c5fecb84b2e5c390ac684c0452875a02afc7c083d49a496a"},
-    {file = "ruff-0.17.1-py3-none-win_amd64.whl", hash = "sha256:5df76f16580fab58d0f6c98a3ac254a4abceb7b2489b8b678335869cff77b3d7"},
-    {file = "ruff-0.17.1-py3-none-win_arm64.whl", hash = "sha256:42400b9a6ff8515ff27796f07f92e0195be011c86e81e381606f58ea5502fef4"},
-    {file = "ruff-0.17.1.tar.gz", hash = "sha256:5bb796c5112e9fb9527f2ef2faa0a130d6312d19de92bcfaddd70dbb2d41020f"},
+    {file = "ruff-0.17.2-py3-none-linux_armv6l.whl", hash = "sha256:96a65e755d8dba094707fb23ab602111d9a31ec2835b3a6992a1914a8fcb211e"},
+    {file = "ruff-0.17.2-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:39c5b55c960515cdb32be16e69efb5734c589c06a0eb38a22694524a336b889d"},
+    {file = "ruff-0.17.2-py3-none-macosx_11_0_arm64.whl", hash = "sha256:92a80d2f44584dabb0189b3a6c393e37e525e04942838482010575cb81945be7"},
+    {file = "ruff-0.17.2-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b7d0906677d89bbf3cf73cde64b5bbe2ab35df3ae43e49ee2627301e91265bac"},
+    {file = "ruff-0.17.2-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:7cfd783590edf2b77317882631900f6a13ea2e8eacefe6ebf2370d2715299160"},
+    {file = "ruff-0.17.2-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:122258f6ecde0e0dd1bb60b24263c3edde4338caf723fca711cc729f9bfd414a"},
+    {file = "ruff-0.17.2-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:7f8fba429d6ac4128ab29cfb8fa6240d2fa671d04adf7f84d3b22fc7b6b6bea4"},
+    {file = "ruff-0.17.2-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:583bd67bb9e7061dd09bc46a0a884bae2bbd214dbcd48e509813612619683869"},
+    {file = "ruff-0.17.2-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c60f93fec7142dba5b8f487f94bf2f6231dae24dc11e4c48648347c8b0720004"},
+    {file = "ruff-0.17.2-py3-none-manylinux_2_31_riscv64.whl", hash = "sha256:c555a877f8f41447e318101cfefea9bf12dfa9f82eedf90c376e57e069f917d0"},
+    {file = "ruff-0.17.2-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:ba405cbd5ec7bda1f555d5e52be1fd68d02608d4d95d24591bdac92cfacb579f"},
+    {file = "ruff-0.17.2-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:8c21b4ab24485358f17291a4f8dc5399b834e963b8efedd920fe4fdb02081bb4"},
+    {file = "ruff-0.17.2-py3-none-musllinux_1_2_i686.whl", hash = "sha256:5875a16b0de70b43cb81eabea5ae5e8f5d1b2fd1b5e6ed07f80cfe5019d0bd5a"},
+    {file = "ruff-0.17.2-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:2d086be452eed686aa51271ecf2cbe5037956517cc6ee39a17b4489ac12f8bbe"},
+    {file = "ruff-0.17.2-py3-none-win32.whl", hash = "sha256:6bce7d1f5165701ae18f5df85c65afe78cddfa6c5fb4b9bdb0014d60388f3edd"},
+    {file = "ruff-0.17.2-py3-none-win_amd64.whl", hash = "sha256:1b59d447f197bef9ef48a22ba1a6016137753c6099e9bac9c36eb566e422424c"},
+    {file = "ruff-0.17.2-py3-none-win_arm64.whl", hash = "sha256:195ad918027f817c119310ca89a42d347887dfc28934aaa869325e9c5dc9d962"},
+    {file = "ruff-0.17.2.tar.gz", hash = "sha256:84d632402d14c23b488f941db23712d6736a013225162062d34558c3f3c780eb"},
 ]
 
 [[package]]
@@ -4004,7 +4004,7 @@ description = "The lightning-fast ASGI server."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "sys_platform != \"emscripten\" or extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or sys_platform != \"emscripten\""
 files = [
     {file = "uvicorn-0.54.0-py3-none-any.whl", hash = "sha256:505bdb0f318731d45f1f712071fc781a8981f6847a31c902c9f5e652d4f67faf"},
     {file = "uvicorn-0.54.0.tar.gz", hash = "sha256:a2e33cbfaa0306f8e6b0c13e0cb89d7d7a2da3e62b90c66e18c33d9807b28620"},
@@ -4031,7 +4031,7 @@ description = "Fast implementation of asyncio event loop on top of libuv"
 optional = true
 python-versions = ">=3.8.1"
 groups = ["main"]
-markers = "sys_platform != \"win32\" and sys_platform != \"cygwin\" and platform_python_implementation != \"PyPy\" and (extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\")"
+markers = "sys_platform != \"win32\" and sys_platform != \"cygwin\" and platform_python_implementation != \"PyPy\" and (extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\")"
 files = [
     {file = "uvloop-0.23.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:ce17bc317d089f361b33521654c13e30eacfd3d2034fd34e613ca9c51c969686"},
     {file = "uvloop-0.23.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:53c2c5d7e2024e46776c2d90e6c637d01102126b61aaf5faa5edaf05f8b5722a"},
@@ -4108,7 +4108,7 @@ description = "Simple, modern and high performance file watching and code reload
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "watchfiles-1.3.0-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:000b9688fc8133037a8b075c8ebf98f32844ff8964dda61e85c1db547dafc441"},
     {file = "watchfiles-1.3.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:bbc1198edfdc90fda0600f825aa94150f428dfcbf8138746f55998e0e660d64c"},
@@ -4155,7 +4155,7 @@ description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version < \"3.14\" and (extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\" or extra == \"langchain\")"
+markers = "python_version < \"3.14\" and (extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"langchain\")"
 files = [
     {file = "websockets-16.1.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:49ae99bdfcae803a885c926bf14f886196e84925395bb3f568fef5c0f0979d7d"},
     {file = "websockets-16.1.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:5bfd1ac19b1b9986a9c95a82d5e23a391ebb09e12c34d7be6094b86efcc35731"},
@@ -4275,7 +4275,7 @@ description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.14\" and (extra == \"pacs\" or extra == \"all\" or extra == \"camt\" or extra == \"acmt\" or extra == \"langchain\")"
+markers = "python_version >= \"3.14\" and (extra == \"acmt\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"langchain\")"
 files = [
     {file = "websockets-17.3-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:45cc1ccb12ced6d242335159e8221733c8696da5ad0b6ceef6debb0f5ce89110"},
     {file = "websockets-17.3-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:46ae05aa1aecd47d4d7de0f05ce2d1d2eb418f8de614964d754cc3b9a409c400"},
@@ -4440,7 +4440,7 @@ description = "An XML Schema validator and decoder"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"pain\" or extra == \"all\" or extra == \"pacs\" or extra == \"camt\" or extra == \"acmt\""
+markers = "extra == \"acmt\" or extra == \"all\" or extra == \"pain\" or extra == \"pacs\" or extra == \"camt\""
 files = [
     {file = "xmlschema-4.3.2-py3-none-any.whl", hash = "sha256:cf5c970a30f6ebcb3da35260e694704cc0b6794d8ace46125bb2a95e38ed9307"},
     {file = "xmlschema-4.3.2.tar.gz", hash = "sha256:f3b33a21a2b2cdc404ddc3fb599d8bc1dee90b155d547370672e6e684746b8d6"},
@@ -4813,4 +4813,4 @@ pain = ["pain001-mcp"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "33f670ae018e3b16d012e041ce68500b6ddcb9a0b8a91a8e64727f5ab549f947"
+content-hash = "7a5a4efc4ae7836e06e8ef2cd38896be46d6637be725a4db9734d68e66e9373a"
