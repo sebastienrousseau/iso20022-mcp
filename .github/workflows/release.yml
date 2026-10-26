@@ -121,17 +121,30 @@ jobs:
       - name: Install Poetry (hash-pinned)
         run: pip install --require-hashes -r requirements/build.txt
 
+      # The SBOM describes the locked runtime set, so refuse a missing or
+      # stale poetry.lock instead of letting poetry install resolve afresh.
+      - name: Verify poetry.lock is current
+        run: |
+          if ! poetry check --lock; then
+            echo "::error::poetry.lock is missing or stale; run 'poetry lock', commit, and re-tag."
+            exit 1
+          fi
+
       - name: Install runtime dependencies
         run: poetry install --no-interaction --only main
 
       - name: Install SBOM + license tooling (hash-pinned)
         run: pip install --require-hashes -r requirements/sbom.txt
 
+      # The SBOM tools are installed outside Poetry's venv, so `poetry run`
+      # alone would describe the tools' own interpreter. Point both at the
+      # venv that holds the locked runtime set.
       - name: Generate CycloneDX SBOM (JSON)
         run: |
-          poetry run cyclonedx-py environment \
+          cyclonedx-py environment \
             --of JSON \
-            -o "iso20022-mcp-${RELEASE_TAG}.cdx.json"
+            -o "iso20022-mcp-${RELEASE_TAG}.cdx.json" \
+            "$(poetry env info --executable)"
 
       - name: Generate SPDX SBOM (JSON)
         uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
@@ -143,7 +156,7 @@ jobs:
 
       - name: Generate pip-licenses manifest
         run: |
-          poetry run pip-licenses \
+          pip-licenses --python "$(poetry env info --executable)" \
             --format=json \
             --with-urls --with-license-file --no-license-path \
             --output-file "iso20022-mcp-${RELEASE_TAG}.licenses.json"

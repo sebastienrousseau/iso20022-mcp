@@ -8,6 +8,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Security
+
+- The release SBOMs (CycloneDX and the pip-licenses manifest) describe
+  the locked runtime environment. The SBOM tools are installed outside
+  Poetry's venv, so `poetry run` pointed them at their own interpreter
+  and the SBOM listed the tooling, not the runtime set; both now take
+  the venv's interpreter explicitly.
+- The release SBOM job refuses a missing or stale `poetry.lock` before
+  installing the runtime set.
+- The MCP Inspector conformance job pins `@modelcontextprotocol/inspector`
+  to 2.10.1, so a new npm publish cannot change what CI runs.
+
 ## [0.0.18] - 2026-10-25
 
 ### Added
