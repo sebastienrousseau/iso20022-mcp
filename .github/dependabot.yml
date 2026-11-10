@@ -2,8 +2,18 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 version: 2
 updates:
+  # Dependabot resolves a pip job on one Python: for "/" the lowest that
+  # pyproject.toml allows (3.10). requirements/build.in is compiled for
+  # 3.12, the release toolchain's Python, and floors filelock >= 4.2.1,
+  # which needs 3.11: updating it from "/" failed with
+  # dependency_file_not_resolvable. "/" leaves it out, and the entry at
+  # the end updates it from /requirements, where no pyproject.toml pins
+  # the Python and Dependabot uses its newest.
   - package-ecosystem: "pip"
     directory: "/"
+    exclude-paths:
+      - "requirements/build.in"
+      - "requirements/build.txt"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -44,3 +54,24 @@ updates:
       github-actions:
         patterns:
           - "*"
+
+  # The 3.12 release tooling only; every other set stays with "/" above.
+  - package-ecosystem: "pip"
+    directory: "/requirements"
+    exclude-paths:
+      - "requirements/ci.*"
+      - "requirements/fuzz.*"
+      - "requirements/sbom.*"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "sebastienrousseau"
+    labels:
+      - "dependencies"
+      - "automated"
+    commit-message:
+      prefix: "chore(deps):"
+      include: "scope"
